@@ -17,10 +17,10 @@ Sleek, intuitive, and powerful mobile first front-end framework for faster and e
 
 - With boottable.js plugin is possible to do:
 
-- Clear the table - method 'clr'
-- Add items in the table - method 'add'
-- Edit a table item - method 'edt'
-- Delete a table item - method 'del'
+-- Clear the table - method 'clr'
+-- Add items in the table - method 'add'
+-- Edit a table item - method 'edt'
+-- Delete a table item - method 'del'
 
 ## 'clr'
 
