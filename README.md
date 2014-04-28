@@ -53,6 +53,37 @@ $('#table-users').bootTable({
 }, header, values);		
 ```
 
+### edt
+
+- Edit items in the table using the plugin without the need to consult the database. (bootTable/example/js/script.js - method edit)
+
+```javascript
+var params = { 
+	"ID_USER" : id
+};
+var edt = $('#table-users').bootTable({
+	method : 'edt'
+}, params);	
+
+$('#txt-user-code'		 ).val( edt.ID_USER  );
+$('#txt-user-name'		 ).val( edt.NAME 	 );
+$('#txt-user-password'	 ).val( edt.PASSWORD );
+$('#txt-user-repassword' ).val( edt.PASSWORD );	
+```
+
+### del
+
+- Delete items in the table using the plugin. (bootTable/example/js/script.js - method delete)
+
+```
+var params = { 
+	"ID_USER" : id
+};
+var del = $('#table-users').bootTable({
+	method : 'del'
+}, params);	
+```
+
 ## Usage Example 
 
 - Donwload the Project 
