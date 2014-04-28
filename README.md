@@ -27,7 +27,7 @@ Sleek, intuitive, and powerful mobile first front-end framework for faster and e
 - Before we get all the items of the table in the database is necessary to clean the items that are in the table, using the method clear.
 
 ```javascript
-- bootTable/example/js/script.js - method all
+- example/js/script.js - method all
 
 $('#table-users').bootTable({
 	method : 'clr'
@@ -39,7 +39,7 @@ $('#table-users').bootTable({
 - Added items in the table, after returning from the database. 
 
 ```javascript
-- bootTable/example/js/script.js - method all
+- example/js/script.js - method all
 
 var header = { 
 	"ID_USER" : values.ID_USER
@@ -59,9 +59,11 @@ $('#table-users').bootTable({
 
 ### edt
 
-- Edit items in the table using the plugin without the need to consult the database. (bootTable/example/js/script.js - method edit)
+- Edit items in the table using the plugin without the need to consult the database.
 
 ```javascript
+- example/js/script.js - method edit
+
 var params = { 
 	"ID_USER" : id
 };
@@ -77,9 +79,11 @@ $('#txt-user-repassword' ).val( edt.PASSWORD );
 
 ### del
 
-- Delete items in the table using the plugin. (bootTable/example/js/script.js - method delete)
+- Delete items in the table using the plugin.
 
 ```
+- example/js/script.js - method delete
+
 var params = { 
 	"ID_USER" : id
 };
