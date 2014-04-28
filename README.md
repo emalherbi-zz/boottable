@@ -81,7 +81,7 @@ $('#txt-user-repassword' ).val( edt.PASSWORD );
 
 - Delete items in the table using the plugin.
 
-```
+```javascript
 - example/js/script.js - method delete
 
 var params = { 
