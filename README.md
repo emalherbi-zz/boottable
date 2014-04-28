@@ -15,14 +15,14 @@ Sleek, intuitive, and powerful mobile first front-end framework for faster and e
 
 ## Usage Plugin 
 
-- With boottable.js plugin is possible to do:
+- With boottable.js plugin is possible to do
 
-Clear the table - method 'clr'
-Add items in the table - method 'add'
-Edit a table item - method 'edt'
-Delete a table item - method 'del'
+- Clear the table - method 'clr'
+- Add items in the table - method 'add'
+- Edit a table item - method 'edt'
+- Delete a table item - method 'del'
 
-## 'clr'
+### clr
 
 - Before we get all the items of the table in the database is necessary to clean the items that are in the table, using the method clear. (bootTable/example/js/script.js - method all)
 
@@ -32,9 +32,9 @@ $('#table-users').bootTable({
 });	
 ```
 
-## 'add'
+### add
 
--- Added items in the table, after returning from the database. (bootTable/example/js/script.js - method all)
+- Added items in the table, after returning from the database. (bootTable/example/js/script.js - method all)
 
 ```javascript
 var header = { 
