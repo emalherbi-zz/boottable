@@ -13,9 +13,47 @@ Sleek, intuitive, and powerful mobile first front-end framework for faster and e
 
 - http://getbootstrap.com/
 
-## Usage Plugin ?
+## Usage Plugin 
 
-## Usage Example ? 
+- With boottable.js plugin is possible to do:
+
+- Clear the table - method 'clr'
+- Add items in the table - method 'add'
+- Edit a table item - method 'edt'
+- Delete a table item - method 'del'
+
+## 'clr'
+
+- Before we get all the items of the table in the database is necessary to clean the items that are in the table, using the method clear. (bootTable/example/js/script.js - method all)
+
+```
+$('#table-users').bootTable({
+	method : 'clr'
+});	
+```
+
+## 'add'
+
+-- Added items in the table, after returning from the database. (bootTable/example/js/script.js - method all)
+
+```
+var header = { 
+	"ID_USER" : values.ID_USER
+};
+var values = {
+	"ID_USER" 	: values.ID_USER, 
+	"NAME" 		: values.NAME,
+	"PASSWORD" 	: values.PASSWORD,
+	"ACTIVE" 	: ( values.ACTIVE == '1' ) ? 'Yes' : 'No',
+	"EDIT" 		: '<div onclick="User.edit(' + values.ID_USER + ')" ><span class="glyphicon glyphicon-pencil"></span></div>',
+	"DELETE" 	: '<div onclick="User.delete(' + values.ID_USER + ')" ><span class="glyphicon glyphicon-trash"></span></div>'
+};
+$('#table-users').bootTable({
+	method : 'add'
+}, header, values);		
+```
+
+## Usage Example 
 
 - Donwload the Project 
 - Exec release.sql (example/script/release.sql)  
