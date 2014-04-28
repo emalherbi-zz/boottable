@@ -1,0 +1,19 @@
+body {
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+.navbar {
+    margin-bottom: 20px;
+}
+
+/* CSS TABLE */
+
+/* all table cursor pointer */
+table {
+	cursor: pointer;
+}
+/* all table columns center */
+table thead tr th,
+table tbody tr td {
+	text-align: center;
+}
