@@ -24,9 +24,11 @@ Sleek, intuitive, and powerful mobile first front-end framework for faster and e
 
 ### clr
 
-- Before we get all the items of the table in the database is necessary to clean the items that are in the table, using the method clear. (bootTable/example/js/script.js - method all)
+- Before we get all the items of the table in the database is necessary to clean the items that are in the table, using the method clear.
 
 ```javascript
+- bootTable/example/js/script.js - method all
+
 $('#table-users').bootTable({
 	method : 'clr'
 });	
@@ -34,9 +36,11 @@ $('#table-users').bootTable({
 
 ### add
 
-- Added items in the table, after returning from the database. (bootTable/example/js/script.js - method all)
+- Added items in the table, after returning from the database. 
 
 ```javascript
+- bootTable/example/js/script.js - method all
+
 var header = { 
 	"ID_USER" : values.ID_USER
 };
