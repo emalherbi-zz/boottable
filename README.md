@@ -115,7 +115,5 @@ Anyone and everyone is welcome to contribute.
 
 ## Author
 
-**Eduardo Malherbi Martins**
-
-+ [http://emalherbi.com](http://emalherbi.com)
++ [Eduardo Malherbi Martins](http://emalherbi.com)
 
