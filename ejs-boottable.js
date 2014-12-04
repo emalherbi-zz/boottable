@@ -233,41 +233,50 @@ if (!Object.keys) {
       $('#' + base.$el.attr('id')).delegate( "tbody tr", "click", function(event) {
         $(event.currentTarget).parent().children().removeClass('selected');
         $(event.currentTarget).addClass('selected');
-        
-        $(event.delegateTarget).trigger( "BootTable_EventSelectedItem", [ base.getSelectedItem() ] );
+
+        /* clear base el, fix bug if have 2 or more tables */
+        base.$el = $(event.delegateTarget);
+        base.el = event.delegateTarget;
+
+        $(event.delegateTarget).trigger( "BootTable_EventClickSelectedItem", [ base.getSelectedItem() ] );
       });
 
-      /* VERIFICAR O EVENTO PARA FUNCIONAR QUANDO EXISTIR 2 TABLES
       $('#' + base.$el.attr('id')).off('keydown').on('keydown', function(e) {
-
-        var index = Number($('#' + base.$el.attr('id')).find('tbody').find('tr.selected').index());
+        var index = Number($(e.delegateTarget).find('tbody').find('tr.selected').index());
         var row   = index + 1;
 
-        if ( e.ctrlKey === true && e.keyCode === 40 ) {
-          $('#' + base.$el.attr('id')).find('tbody').find('tr.selected').removeClass('selected');
+        if ( e.ctrlKey === true && e.keyCode === 40 ) { /* DOWN */
+          $(e.delegateTarget).find('tbody').find('tr.selected').removeClass('selected');
 
-          if ( Number( $('#' + base.$el.attr('id')).find('tbody').find('tr:nth-child(' + ( row + 1) + ')').length ) === 0 ) {
-            $('#' + base.$el.attr('id')).find('tbody').find('tr:nth-child(' + (1) + ')').addClass('selected');
+          if ( Number( $(e.delegateTarget).find('tbody').find('tr:nth-child(' + ( row + 1) + ')').length ) === 0 ) {
+            $(e.delegateTarget).find('tbody').find('tr:nth-child(' + (1) + ')').addClass('selected');
           } else {
-            $('#' + base.$el.attr('id')).find('tbody').find('tr:nth-child(' + ( row + 1) + ')').addClass('selected');
+            $(e.delegateTarget).find('tbody').find('tr:nth-child(' + ( row + 1) + ')').addClass('selected');
           }
         }
-        if ( e.ctrlKey === true && e.keyCode === 38 ) {
-          $('#' + base.$el.attr('id')).find('tbody').find('tr.selected').removeClass('selected');
+        if ( e.ctrlKey === true && e.keyCode === 38 ) { /* UP */
+          $(e.delegateTarget).find('tbody').find('tr.selected').removeClass('selected');
 
-          if ( Number( $('#' + base.$el.attr('id')).find('tbody').find('tr:nth-child(' + ( row - 1) + ')').length ) === 0 ) {
-            $('#' + base.$el.attr('id')).find('tbody').find('tr:nth-child(' + (1) + ')').addClass('selected');
+          if ( Number( $(e.delegateTarget).find('tbody').find('tr:nth-child(' + ( row - 1) + ')').length ) === 0 ) {
+            $(e.delegateTarget).find('tbody').find('tr:nth-child(' + (1) + ')').addClass('selected');
           } else {
-            $('#' + base.$el.attr('id')).find('tbody').find('tr:nth-child(' + ( row - 1) + ')').addClass('selected');
+            $(e.delegateTarget).find('tbody').find('tr:nth-child(' + ( row - 1) + ')').addClass('selected');
           }
+        }
+        if ( e.ctrlKey === true && e.keyCode === 13 ) { /* ENTER */
+
+          /* clear base el, fix bug if have 2 or more tables */
+          base.$el = $(e.delegateTarget);
+          base.el = e.delegateTarget;
+
+          $(e.delegateTarget).trigger( "BootTable_EventEnterSelectedItem", [ base.getSelectedItem() ] );
         }
       });
-      */
 
 			return true;
 		};
 
-		base.getSelectedItem = function(){
+		base.getSelectedItem = function() {
 			var r = false;
 
 			base.$el.find('tbody').find('tr.selected').each(function(i, el) {
