@@ -230,11 +230,11 @@ if (!Object.keys) {
       var style = $('<style>' + '#' + base.$el.attr('id') + ' tbody tr.selected { background: #d9ebf5 !important; }</style>');
       $('html > head').append(style);
 
-      base.$el.delegate( "tbody tr", "click", function(event) {
+      $('#' + base.$el.attr('id')).delegate( "tbody tr", "click", function(event) {
         $(event.currentTarget).parent().children().removeClass('selected');
         $(event.currentTarget).addClass('selected');
-
-        base.$el.trigger( "BootTable_EventSelectedItem", [ base.getSelectedItem() ] );
+        
+        $(event.delegateTarget).trigger( "BootTable_EventSelectedItem", [ base.getSelectedItem() ] );
       });
 
       /* VERIFICAR O EVENTO PARA FUNCIONAR QUANDO EXISTIR 2 TABLES
