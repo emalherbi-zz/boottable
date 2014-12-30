@@ -17,3 +17,15 @@ table thead tr th,
 table tbody tr td {
 	text-align: center;
 }
+
+
+.progress {
+    background: none repeat scroll 0 0 #ff3030;
+    height: 2px;
+    left: 14.7px;
+    margin-top: -8px;
+    position: absolute;
+    transition: left 1s ease 0s;
+    width: 1139px;
+    z-index: -1;
+}

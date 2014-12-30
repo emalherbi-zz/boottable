@@ -4,7 +4,7 @@ class DataBase
 {
 	private static $myServer = "localhost";
 	private static $myUser = "root";
-	private static $myPass = "";
+	private static $myPass = "root";
 	private static $myDB = "boottable";
 	private static $dbhandle;
 
@@ -22,14 +22,14 @@ class DataBase
 
 		$result = mysql_query( $sql );
 		$numrows = mysql_num_rows( $result );
-		
+
 		if ( $numrows > 0 ) {
 			$collection = array();
-			
+
 			while ( $row = mysql_fetch_assoc($result) ) {
 				$collection[] = $row;
 			}
-		} 
+		}
 		else {
 			$this->disconnect();
 			return false;
@@ -38,38 +38,38 @@ class DataBase
 		$this->disconnect();
     	return $collection;
     }
-    
+
     public function select_sql($sql, $debug=false) {
-        if ( $debug ) return var_dump( $sql );          
-        return $this->query($sql); 
-    }    
-    
+        if ( $debug ) return var_dump( $sql );
+        return $this->query($sql);
+    }
+
     public function execute_sql($sql='', $debug=false) {
-        if ( $debug ) return var_dump( $sql );          
+        if ( $debug ) return var_dump( $sql );
     	$this->connect();
-        $result = mysql_query($sql); 
+        $result = mysql_query($sql);
 		$this->disconnect();
     	return $result;
-    } 
-    
+    }
+
 	public function execute_sp($sx, $params) {
 		$this->connect();
-		
-		$keys = array_keys($params);		
+
+		$keys = array_keys($params);
 		$first_key = $keys[0];
 		$first_value = $params[ $first_key ];
-		
+
 		array_shift($params);
 		$params = implode(",", $params);
-		
+
 		mysql_query( " SET @$first_key = $first_value " );
 		mysql_query( " CALL $sx(@$first_key,$params) " );
-		
-		$rs = mysql_query( " SELECT COALESCE(@$first_key,0) AS $first_key " );		
+
+		$rs = mysql_query( " SELECT COALESCE(@$first_key,0) AS $first_key " );
 		$result = @mysql_fetch_array($rs);
-		
+
 		$this->disconnect();
-		
+
     	return $result[$first_key];
    }
 }

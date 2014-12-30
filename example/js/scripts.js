@@ -1,4 +1,7 @@
-var User = {	
+
+//  -moz-linear-gradient(center bottom, rgb(43,194,83) 37%, rgb(84,240,84) 69%);
+
+var User = {
 	init : function() {
 		User.save();
 		User.all();
@@ -6,49 +9,64 @@ var User = {
 	all : function() {
 		$('#table-users').bootTable({
 			method : 'clr'
-		});	
-		var params = { 
-			'method' : 'all'			
+		});
+		var params = {
+			'method' : 'all'
 		};
 		$.post('?m=controller&c=UserController', params, function( data ) {
+			$('#table-users thead div.progress').css('width', 0);
+
+			var maxwidth = $('#table-users').find('thead').find('tr').width();
+			var maxdata = data.length;
+			var sizeprogress = Math.abs(maxwidth / maxdata);
+			var i = 1;
+
 			$.each( data, function( key, values ) {
-		        var header = { 
+		        var header = {
 		            "ID_USER" : values.ID_USER
 		        };
 		        var values = {
-		            "ID_USER" 	: values.ID_USER, 
+		            "ID_USER" 	: values.ID_USER,
 		            "NAME" 		: values.NAME,
 		            "PASSWORD" 	: values.PASSWORD,
 		            "ACTIVE" 	: ( values.ACTIVE == '1' ) ? 'Yes' : 'No',
 		            "EDIT" 		: '<div onclick="User.edit(' + values.ID_USER + ')" ><span class="glyphicon glyphicon-pencil"></span></div>',
 		            "DELETE" 	: '<div onclick="User.delete(' + values.ID_USER + ')" ><span class="glyphicon glyphicon-trash"></span></div>'
 		        };
-		        
+
 		        $('#table-users').bootTable({
 		    	 	method : 'add'
-		    	}, header, values);			        
-		    });  			
+		    	}, header, values);
+
+					var w = sizeprogress * i;
+					$('#table-users thead div.progress').css('width', w).delay( 1000 );
+
+					i++;
+
+					console.log(i);
+					console.log(sizeprogress);
+		    });
 		}, 'json');
 	},
 	edit : function( id ) {
 		/* FIRST WAY NOT SEARCH THE INFORMATION IN THE DATABASE */
-		var params = { 
+		var params = {
    			"ID_USER" : id
    		};
    		var edt = $('#table-users').bootTable({
    			method : 'edt'
-   		}, params);	
-		
+   		}, params);
+
    		$('#txt-user-code'		 ).val( edt.ID_USER  );
    		$('#txt-user-name'		 ).val( edt.NAME 	 );
    		$('#txt-user-password'	 ).val( edt.PASSWORD );
    		$('#txt-user-repassword' ).val( edt.PASSWORD );
-		
+
    		/* THE SECOND WAY SEARCH THE INFORMATION IN THE DATABASE */
-//		var params = { 
+//		var params = {
 //			'method' : 'edit',
-//			'code' : id			
-//		};	
+//			'code' : id
+//		};
 //		$.post('?m=controller&c=UserController', params, function( data ) {
 //			$.each( data, function( key, values ) {
 //
@@ -68,18 +86,18 @@ var User = {
 					label: "Yes",
 					className: "btn-success",
 					callback: function() {
-			    		var params = { 
+			    		var params = {
 			    			"ID_USER" : id
 			    		};
 			    		var del = $('#table-users').bootTable({
 			    			method : 'del'
-			    		}, params);	
-			    		
+			    		}, params);
+
 			    		if ( del == true ) {
-		    				var params = { 
+		    				var params = {
 								'method' : 'delete',
-								'code' : id			
-							};						
+								'code' : id
+							};
 							$.post('?m=controller&c=UserController', params, function( data ) {
 								if ( data == true ) {
 									User.all();
@@ -93,7 +111,7 @@ var User = {
 					className: "btn-primary"
 				}
 	    	}
-	    }); 
+	    });
 	},
 	save : function() {
 		$("#form-user").find('input,select,textarea').not('[type=submit]').jqBootstrapValidation({
@@ -101,22 +119,22 @@ var User = {
 		    submitError: function($form, event, errors) {
 		    },
 		    submitSuccess: function($form, event) {
-				var params = { 
+				var params = {
 					'method' : 'save',
-					'form'   : $form.serialize()		
+					'form'   : $form.serialize()
 				};
-			
+
 				$.post('?m=controller&c=UserController', params, function( data ) {
 					User.all();
 					$('#btn-reset').click();
 				}, 'json');
-			
-		    	event.preventDefault();		
+
+		    	event.preventDefault();
 		    },
 		    filter: function() {
 		        return $(this).is(":visible");
 		    }
-		});		
+		});
 	}
 };
 

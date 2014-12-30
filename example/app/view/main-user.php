@@ -2,7 +2,7 @@
 	<input class="form-control" id="txt-user-code" name="txt-user-code" type="hidden" />
 	<div class="page-header">
 	  <h1>Sign in <small>* Required fields</small></h1>
-	</div>	
+	</div>
 	<div class="form-group">
 		<label for="txt-user-name">* Name</label>
 		<div class="input-group">
@@ -17,7 +17,7 @@
 	<div class="form-group">
 		<label for="txt-user-repassword" >* Re-Password</label>
 		<input class="form-control" id="txt-user-repassword" name="txt-user-repassword" type="password" required />
-	</div>	
+	</div>
 	<button type="submit" class="btn btn-success">Save</button>
 	<button id="btn-reset" name="btn-reset" type="reset" class="btn btn-primary">New</button>
 </form>
@@ -30,7 +30,7 @@
 	<table id="table-users" name="table-users" class="table table-bordered">
 		<thead>
 			<tr>
-				<th width='80px' field="ID_USER" >Code</th>
+				<th width='80px' field="ID_USER" ><div class="progress"></div>Code</th>
 				<th field="NAME" >Name</th>
 				<th field="PASSWORD" >Password</th>
 				<th field="ACTIVE" width='80px' >Active</th>
