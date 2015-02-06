@@ -1,5 +1,5 @@
 /*!
- * bootTable vs 0.0.3 by emalherbi.com
+ * bootTable vs 0.0.4 by emalherbi.com
  */
 
 /* IE8 trim function not exist */
@@ -227,7 +227,7 @@ if (!Object.keys) {
 		};
 
 		base.sel = function() {
-      var style = $('<style>' + '#' + base.$el.attr('id') + ' tbody tr.selected { background: #d9ebf5 !important; }</style>');
+      var style = $('<style>' + '#' + base.$el.attr('id') + ' tbody tr.selected { background: #d0efff !important; }</style>');
       $('html > head').append(style);
 
       $('#' + base.$el.attr('id')).delegate( "tbody tr", "click", function(event) {
@@ -238,7 +238,7 @@ if (!Object.keys) {
         base.$el = $(event.delegateTarget);
         base.el = event.delegateTarget;
 
-        $(event.delegateTarget).trigger( "BootTable_EventClickSelectedItem", [ base.getSelectedItem() ] );
+        $(event.delegateTarget).trigger( "BOOTTABLE_EVENT_CLICK_ROW", [ base.getSelectedItem() ] );
       });
 
       $('#' + base.$el.attr('id')).off('keydown').on('keydown', function(e) {
@@ -253,6 +253,8 @@ if (!Object.keys) {
           } else {
             $(e.delegateTarget).find('tbody').find('tr:nth-child(' + ( row + 1) + ')').addClass('selected');
           }
+
+          $(e.delegateTarget).trigger( "BOOTTABLE_EVENT_DOWN_ROW", [ base.getSelectedItem() ] );
         }
         if ( e.ctrlKey === true && e.keyCode === 38 ) { /* UP */
           $(e.delegateTarget).find('tbody').find('tr.selected').removeClass('selected');
@@ -262,6 +264,8 @@ if (!Object.keys) {
           } else {
             $(e.delegateTarget).find('tbody').find('tr:nth-child(' + ( row - 1) + ')').addClass('selected');
           }
+
+          $(e.delegateTarget).trigger( "BOOTTABLE_EVENT_UP_ROW", [ base.getSelectedItem() ] );
         }
         if ( e.ctrlKey === true && e.keyCode === 13 ) { /* ENTER */
 
@@ -269,7 +273,7 @@ if (!Object.keys) {
           base.$el = $(e.delegateTarget);
           base.el = e.delegateTarget;
 
-          $(e.delegateTarget).trigger( "BootTable_EventEnterSelectedItem", [ base.getSelectedItem() ] );
+          $(e.delegateTarget).trigger( "BOOTTABLE_EVENT_ENTER_ROW", [ base.getSelectedItem() ] );
         }
       });
 
@@ -307,6 +311,34 @@ if (!Object.keys) {
 			});
 			return r[0];
 		};
+
+    base.getItens = function() {
+      var r = false;
+
+      var columns = base.$el.find('thead').find('tr').find('th').map(function() {
+        return $(this).attr('field');
+      });
+      var table = base.$el.find('tbody').find('tr').map(function(i) {
+        var row = {};
+        $(this).find('td').each(function(i) {
+          var v = $(this).find('input').val();
+          if ( typeof v == 'undefined' ) {
+            v = $(this).find('textarea').val();
+            if ( typeof v == 'undefined' ) {
+              v = $(this).find('label').text();
+              if ( !v.trim() ) {
+                v = $(this).text();
+              }
+            }
+          }
+          row[ columns[i] ] = v;
+        });
+        return row;
+      }).get();
+
+      r = table;
+      return r;
+    };
 
     base.filter = function() {
       var str = "";
@@ -373,6 +405,10 @@ if (!Object.keys) {
 		if ( base.options.getSelectedItem == true ) {
 			r = base.getSelectedItem();
 		}
+    /* get itens */
+    if ( base.options.getItens == true ) {
+      r = base.getItens();
+    }
 
     // ***************** //
 
@@ -391,6 +427,8 @@ if (!Object.keys) {
 
     selected : false, /* add option selected when click on tr */
 		getSelectedItem : false, /* get item selected */
+
+    getItens : false, /* get item selected */
 
     /* Add Filter on Table */
     filter : false, /* IF True add Filter on Table */
@@ -420,5 +458,15 @@ if (!Object.keys) {
 
 		return r;
 	};
+
+  $.fn.getItens = function(){
+    var r = null;
+
+    this.each(function() {
+      r = $.Table.boot(this, null, null, { getItens : true });
+    });
+
+    return r;
+  };
 
 })(jQuery);
