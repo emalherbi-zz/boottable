@@ -95,7 +95,7 @@ module.exports = function(grunt) {
     'concat',
     'uglify',
     'copy',
-    'gh-pages',
+    // 'gh-pages',
     // 'bump'
   ]);
 

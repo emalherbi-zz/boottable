@@ -43,12 +43,10 @@ var User = {
     $table.bootTable({ method : 'init', msg : 'No record found!', selected : true });
 
     $('#btn-start').click(function() {
-      $table.bootTable({ method : 'init' });
       $table.bootTable({ method : 'startLoader' })
     });
 
     $('#btn-end').click(function() {
-      $table.bootTable({ method : 'init' });
       $table.bootTable({ method : 'endLoader' })
     });
 
@@ -114,7 +112,9 @@ var User = {
       var del = $table.bootTable({
         method : 'del'
       }, params);
-      console.log( del );
+      if (del) {
+        $('#txt-get-all').html( 'Record Delete!' );
+      }
 
     }
   }
