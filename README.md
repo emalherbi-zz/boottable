@@ -6,7 +6,7 @@ JQuery Plugin for Manipulating Tables
 Usage Plugin
 ------------
 
-[Example](https://emalherbi.github.io/boottable/)
+[Example](https://emalherbi.github.io/bootTable/)
 
 Contributing
 ------------
