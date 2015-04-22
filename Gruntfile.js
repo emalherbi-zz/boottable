@@ -5,6 +5,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-clean');
   // Load the plugin that concatenate files.
   grunt.loadNpmTasks('grunt-contrib-concat');
+  // Load the plugin that validate files with JSHint.
+  grunt.loadNpmTasks('grunt-contrib-jshint');
   // Load the plugin that copy files and directories.
   grunt.loadNpmTasks('grunt-contrib-copy');
   // Load the plugin that minify and concatenate ".js" files.
@@ -54,6 +56,10 @@ module.exports = function(grunt) {
       }
     },
 
+    jshint: {
+      all: ['<%= pkg.name %>.js']
+    },
+
     /* js file minification */
     uglify: {
       options: {
@@ -93,9 +99,10 @@ module.exports = function(grunt) {
   grunt.registerTask('deploy', [
     'clean',
     'concat',
+    'jshint',
     'uglify',
     'copy',
-    'gh-pages',
+    // 'gh-pages',
     // 'bump'
   ]);
 
