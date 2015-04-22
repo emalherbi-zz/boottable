@@ -23,20 +23,24 @@
 			<div class="col-md-12 column" >
 
 				<div class="page-header" >
-					<h1>Users</h1>
+					<h1>Example</h1>
 				</div>
 
 				<form role="form">
 					<div class="form-group">
-						<button id="btn-all" name="btn-all" type="button" class="btn btn-primary">All</button>
-						<button id="btn-start" name="btn-start" type="button" class="btn btn-primary">Start Loader</button>
-						<button id="btn-end" name="btn-end" type="button" class="btn btn-primary">End Loader</button>
+						<button id="btn-all" name="btn-all" type="button" class="btn btn-primary">Show itens</button>
+
+						<button id="btn-get-all" name="btn-get-all" type="button" class="btn btn-warning">Get Itens</button>
+						<button id="btn-get-item" name="btn-get-item" type="button" class="btn btn-warning">Get Selected Item</button>
+
+						<button id="btn-start" name="btn-start" type="button" class="btn btn-danger">Start Loader</button>
+						<button id="btn-end" name="btn-end" type="button" class="btn btn-danger">End Loader</button>
 					</div>
 				</form>
 
 				<!-- table -->
 				<div class="table-responsive" >
-					<table id="table-users" name="table-users" class="table table-bordered" >
+					<table id="table-users" name="table-users" class="table table-bordered" tabindex="0" >
 						<thead>
 							<tr>
 								<th field="ID_USER" width='80px' >Code</th>
@@ -51,7 +55,6 @@
 						</tbody>
 					</table>
 				</div>
-
 			</div>
 		</div>
 
@@ -59,16 +62,20 @@
 			<div class="col-md-12 column" >
 				<form role="form">
 					<div class="form-group">
-						<button id="btn-get-all" name="btn-get-all" type="button" class="btn btn-primary">Get all itens</button>
-						<button id="btn-get-item" name="btn-get-item" type="button" class="btn btn-primary">Get selected item</button>
+						<textarea id="txt-get-all" name="txt-get-all" class="form-control" rows="3" placeholder="Click on button Get Itens or Get Selected Item" ></textarea>
 					</div>
 					<div class="form-group">
-						<textarea id="txt-get-all" name="txt-get-all" class="form-control" rows="3" ></textarea>
+						<textarea id="txt-event-click-row" name="txt-event-click-row" class="form-control" rows="3" placeholder="Click on grid row" ></textarea>
+					</div>
+					<div class="form-group">
+						<textarea id="txt-event-down-up-row" name="txt-event-down-up-row" class="form-control" rows="3" placeholder="Press key ALT + UP / ALT + DOWN" ></textarea>
+					</div>
+					<div class="form-group">
+						<textarea id="txt-event-enter-row" name="txt-event-enter-row" class="form-control" rows="3" placeholder="Click on grid row and press ALT + ENTER key" ></textarea>
 					</div>
 				</form>
 			</div>
 		</div>
-		
 	</div>
 
 	<script src="https://code.jquery.com/jquery-1.11.2.min.js" ></script>
