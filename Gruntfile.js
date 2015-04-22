@@ -102,8 +102,8 @@ module.exports = function(grunt) {
     'jshint',
     'uglify',
     'copy',
-    // 'gh-pages',
-    // 'bump'
+    'gh-pages'//,
+    //'bump'
   ]);
 
   grunt.registerTask('default', [

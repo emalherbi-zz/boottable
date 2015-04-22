@@ -4,7 +4,7 @@
  * Licensed under MIT (http://en.wikipedia.org/wiki/MIT_License)
  */
 /*!
- * bootTable vs 0.0.4 by emalherbi.com
+ * bootTable vs 2.0.0 by emalherbi.com
  */
 
 /* IE8 trim function not exist */
