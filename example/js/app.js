@@ -40,7 +40,7 @@ var data = [
 var $table = $('#table-users');
 var User = {
   init : function() {
-    $table.bootTable({ method : 'init', msg : 'No record found!', selected : true });
+    $table.bootTable({ method : 'init', msg : 'No record found!', selected : true, selectedBackground : '#d0efff', filter: true });
 
     $('#btn-start').click(function() {
       $table.bootTable({ method : 'startLoader' })
@@ -65,10 +65,28 @@ var User = {
       $('#txt-get-all').html(JSON.stringify($table.getSelectedItem()));
     });
 
+    $table.on('BOOTTABLE_EVENT_CLICK_ROW', function(e, params) {
+      $('#txt-event-click-row').html(JSON.stringify(params));
+    });
+
+    $table.on('BOOTTABLE_EVENT_ENTER_ROW', function(e, params) {
+      $('#txt-event-enter-row').html(JSON.stringify(params));
+    });
+
+    $table.on('BOOTTABLE_EVENT_DOWN_ROW', function(e, params) {
+      $('#txt-event-down-up-row').html(JSON.stringify(params));
+    });
+
+    $table.on('BOOTTABLE_EVENT_UP_ROW', function(e, params) {
+      $('#txt-event-down-up-row').html(JSON.stringify(params));
+    });
+
     $('#btn-all').click(function() {
       User.all();
     });
     User.all();
+
+    // $table.bootTableJson(data);
   },
   all : function() {
     var arrHeader = [];
@@ -91,7 +109,7 @@ var User = {
       arrValues.push(values);
     });
 
-    $table.bootTable({ method : 'addall', filter: true }, arrHeader, arrValues);
+    $table.bootTable({ method : 'addall' }, arrHeader, arrValues);
   },
   edit : function( id ) {
     var params = {
