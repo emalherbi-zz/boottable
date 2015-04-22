@@ -1,4 +1,9 @@
 /*!
+ * ejs-boottable v2.0.0 (https://github.com/emalherbi/boottable/)
+ * Copyright 2010-2015 emalherbi
+ * Licensed under MIT (http://en.wikipedia.org/wiki/MIT_License)
+ */
+/*!
  * bootTable vs 2.0.0 by emalherbi.com
  */
 
