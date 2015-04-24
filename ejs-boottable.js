@@ -1,6 +1,6 @@
 /*!
- * bootTable vs 2.0.0 by emalherbi.com
- */
+* bootTable vs 2.0.0 by emalherbi.com
+*/
 
 /* IE8 trim function not exist */
 if(typeof String.prototype.trim !== 'function') {
@@ -27,30 +27,30 @@ if (!Object.keys) {
 /* plugin bootTable */
 (function($){
 
-	if(!$.Table){
-		$.Table = {};
-	}
+  if(!$.Table){
+    $.Table = {};
+  }
 
-	$.Table.boot = function(el, header, values, options) {
-		var base = this;
+  $.Table.boot = function(el, header, values, options) {
+    var base = this;
 
-		base.$el = $(el);
-		base.el = el;
+    base.$el = $(el);
+    base.el = el;
 
-		base.$el.data("Table.boot", base);
+    base.$el.data("Table.boot", base);
 
     /* initialize plugin */
-		base.initialize = function() {
-			if( typeof( header ) === "undefined" || header === null ) header = '';
-			if( typeof( values ) === "undefined" || values === null ) values = '';
+    base.initialize = function() {
+      if( typeof( header ) === "undefined" || header === null ) header = '';
+      if( typeof( values ) === "undefined" || values === null ) values = '';
 
-			base.header = header;
-			base.values = values;
+      base.header = header;
+      base.values = values;
 
-			base.options = $.extend({},$.Table.boot.defaultOptions, options);
+      base.options = $.extend({},$.Table.boot.defaultOptions, options);
 
       return true;
-		};
+    };
 
     /*
     * init table
@@ -65,10 +65,10 @@ if (!Object.keys) {
     /*
     * removes all table items
     */
-		base.clr = function() {
-			$('#'+base.$el.attr('id')+' tbody tr').remove();
-			return true;
-		};
+    base.clr = function() {
+      $('#'+base.$el.attr('id')+' tbody tr').remove();
+      return true;
+    };
 
     /*
     * adds a default message when no records found in table
@@ -107,67 +107,75 @@ if (!Object.keys) {
     /*
     * Please. If necessary insert a large amount of records in the table, use the method addall.
     */
-		base.add = function() {
-			var arr = [];
-			$.each(base.header, function(i, v) {
-				arr.push( i + "='" + v + "'" );
-			});
-			var join = arr.join(" ");
+    base.add = function() {
+      var arr = [];
+      $.each(base.header, function(i, v) {
+        arr.push( i + "='" + v + "'" );
+      });
+      var join = arr.join(" ");
 
-			var tr = "";
-			tr += "<tr " + join + " >";
+      var tr = "";
+      tr += "<tr " + join + " >";
 
-			$.each(base.values, function(i, v) {
-				tr += "<td>" + v + "</td>";
-			});
-			tr += "</tr>";
+      $.each(base.values, function(i, v) {
+        tr += "<td>" + v + "</td>";
+      });
+      tr += "</tr>";
 
-			base.$el.append( tr );
-			base.$el.show('fast');
-			return true;
-		};
+      base.$el.append( tr );
+      base.$el.show('fast');
+      return true;
+    };
 
-		base.addAll = function() {
-			var itens = '';
+    base.addAll = function() {
+      var itens = '';
 
       base.clr(); /* clear */
       if (base.header.length === 0) { /* if not found a record, a message is automatically add */
         base.msg(); /* add a message */
       }
       else {
-  			$.each(base.header, function(key, header) {
-  				var arr = [];
-  				$.each(header, function(i, v) {
-  					arr.push( i + "='" + v + "'" );
-  				});
-  				var join = arr.join(" ");
+        var columns = base.getColumns();
+        $.each(base.header, function(key, header) {
+          var arr = [];
+          $.each(header, function(i, v) {
+            arr.push( i + "='" + v + "'" );
+          });
+          var join = arr.join(" ");
 
-  				var tr = "";
-  				tr += "<tr " + join + " >";
+          var tr = "";
+          tr += "<tr " + join + " >";
 
-  				var values = base.values[key];
-  				$.each(values, function(i, v) {
-  					tr += "<td>" + v + "</td>";
-  				});
+          var values = base.values[key], y = 0;
+          $.each(values, function(i, v) {
+            tr += "<td data-label='" + columns[y] + "' >" + v + "</td>";
+            y++;
+          });
 
-  				tr += "</tr>";
-  				itens += tr;
-  			});
-  			base.$el.append( itens );
+          tr += "</tr>";
+          itens += tr;
+        });
+        base.$el.append( itens );
       }
 
-			base.$el.show('fast');
-			return true;
-		};
+      base.$el.show('fast');
+      return true;
+    };
 
     base.getColumns = function() {
       return $('#'+base.$el.attr('id')+' thead tr th').map(function() {
-          return $(this).attr('field');
+        return $(this).text();
+      });
+    };
+
+    base.getColumnsField = function() {
+      return $('#'+base.$el.attr('id')+' thead tr th').map(function() {
+        return $(this).attr('field');
       });
     };
 
     base.getRows = function(i) {
-      var columns = base.getColumns();
+      var columns = base.getColumnsField();
       var table = $('#'+base.$el.attr('id')+' tbody tr:nth-child('+(i+1)+')').map(function(i) {
         var row = {};
         $(this).find('td').each(function(i) {
@@ -204,44 +212,44 @@ if (!Object.keys) {
       return rows;
     };
 
-		base.edit = function() {
-			var r = false;
+    base.edit = function() {
+      var r = false;
 
-			var key   = Object.keys(base.header);
-			var value = base.header[ key ];
+      var key   = Object.keys(base.header);
+      var value = base.header[ key ];
 
-			base.$el.find('tbody tr').each(function(i, el) {
-				var id = $(el).attr( key.toString().toLowerCase() );
+      base.$el.find('tbody tr').each(function(i, el) {
+        var id = $(el).attr( key.toString().toLowerCase() );
 
-				if ( id == value ) {
-					r = base.getRows(i);
-				}
-			});
+        if ( id == value ) {
+          r = base.getRows(i);
+        }
+      });
 
-			return r[0];
-		};
+      return r[0];
+    };
 
-		base.delete = function() {
-			var r = false;
+    base.delete = function() {
+      var r = false;
 
-			var key   = Object.keys(base.header);
-			var value = base.header[ key ];
+      var key   = Object.keys(base.header);
+      var value = base.header[ key ];
 
-			base.$el.find('tbody tr').each(function(i, el) {
-				var id = $(el).attr( key.toString().toLowerCase() );
+      base.$el.find('tbody tr').each(function(i, el) {
+        var id = $(el).attr( key.toString().toLowerCase() );
 
-				if ( id == value ) {
-					$(el).attr('delete', 'true');
-					$(el).hide('slow');
+        if ( id == value ) {
+          $(el).attr('delete', 'true');
+          $(el).hide('slow');
 
-					r = true;
-				}
-			});
+          r = true;
+        }
+      });
 
-			return r;
-		};
+      return r;
+    };
 
-		base.sel = function() {
+    base.sel = function() {
       var style = $('<style>' + '#' + base.$el.attr('id') + ' tbody tr.selected { background: ' + base.options.selectedBackground + ' !important; }</style>');
       $('html > head').append(style);
 
@@ -296,8 +304,8 @@ if (!Object.keys) {
         }
       });
 
-			return true;
-		};
+      return true;
+    };
 
     base.filter = function() {
       var layout = "";
@@ -320,16 +328,16 @@ if (!Object.keys) {
       return true;
     };
 
-		base.initialize();
+    base.initialize();
 
-		var r = null;
-		if (base.options.method == 'init') {
+    var r = null;
+    if (base.options.method == 'init') {
       r = base.init();
     }
     else if (base.options.method == 'clr' || base.options.method == 'clear') {
-			r = base.clr();
-		}
-		else if (base.options.method == 'msg') {
+      r = base.clr();
+    }
+    else if (base.options.method == 'msg') {
       r = base.msg();
     }
     else if (base.options.method == 'startloader' || base.options.method == 'startLoader') {
@@ -339,17 +347,17 @@ if (!Object.keys) {
       r = base.endLoader();
     }
     else if (base.options.method == 'add') {
-			r = base.add();
-		}
-		else if (base.options.method == 'addall' || base.options.method == 'addAll' || base.options.method == 'all') {
-			r = base.addAll();
-		}
-		else if (base.options.method == 'edt' || base.options.method == 'edit') {
-			r = base.edit();
-		}
-		else if (base.options.method == 'del' || base.options.method == 'delete' || base.options.method == 'remove') {
-			r = base.delete();
-		}
+      r = base.add();
+    }
+    else if (base.options.method == 'addall' || base.options.method == 'addAll' || base.options.method == 'all') {
+      r = base.addAll();
+    }
+    else if (base.options.method == 'edt' || base.options.method == 'edit') {
+      r = base.edit();
+    }
+    else if (base.options.method == 'del' || base.options.method == 'delete' || base.options.method == 'remove') {
+      r = base.delete();
+    }
     else if (base.options.method == 'addAllJson' || base.options.method == 'allJson' || base.options.method == 'json') {
       r = base.addAll();
     }
@@ -357,13 +365,13 @@ if (!Object.keys) {
     // ***************** //
 
     /* add option selected when click on tr */
-		if ( base.options.selected === true ) {
-			r = base.sel();
-		}
+    if ( base.options.selected === true ) {
+      r = base.sel();
+    }
     /* get item selected */
-		if ( base.options.getSelectedItem === true ) {
-			r = base.getSelectedItem();
-		}
+    if ( base.options.getSelectedItem === true ) {
+      r = base.getSelectedItem();
+    }
     /* get itens */
     if ( base.options.getItens === true ) {
       r = base.getItens();
@@ -375,13 +383,13 @@ if (!Object.keys) {
       r = base.filter();
     }
 
-		// ***************** //
+    // ***************** //
 
     return r;
-	};
+  };
 
-	$.Table.boot.defaultOptions = {
-		method : '', /* call method plugin */
+  $.Table.boot.defaultOptions = {
+    method : '', /* call method plugin */
     msg : 'No record found!', /* adds a default message when no records found in table */
 
     selected : false, /* add option selected when click on tr */
@@ -392,17 +400,17 @@ if (!Object.keys) {
 
     getSelectedItem : false, /* get item selected */
     getItens : false /* get item selected */
-	};
+  };
 
-	$.fn.bootTable = function(options, header, values) {
-		var r = null;
+  $.fn.bootTable = function(options, header, values) {
+    var r = null;
 
-		this.each(function() {
-			r = $.Table.boot(this, header, values, options);
-		});
+    this.each(function() {
+      r = $.Table.boot(this, header, values, options);
+    });
 
-		return r;
-	};
+    return r;
+  };
 
   $.fn.bootTableJson = function(values) {
     var r = null;
@@ -414,19 +422,19 @@ if (!Object.keys) {
     return r;
   };
 
-	$.fn.getBootTable = function() {
-		return this.data("Table.boot");
-	};
+  $.fn.getBootTable = function() {
+    return this.data("Table.boot");
+  };
 
-	$.fn.getSelectedItem = function() {
-		var r = null;
+  $.fn.getSelectedItem = function() {
+    var r = null;
 
-		this.each(function() {
-			r = $.Table.boot(this, null, null, { getSelectedItem : true });
-		});
+    this.each(function() {
+      r = $.Table.boot(this, null, null, { getSelectedItem : true });
+    });
 
-		return r;
-	};
+    return r;
+  };
 
   $.fn.getItens = function() {
     var r = null;
