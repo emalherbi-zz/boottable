@@ -35,7 +35,7 @@ table {
   table td:before {
     content: attr(data-label);
     float: left;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     font-weight: bold;
   }
 }

@@ -134,7 +134,7 @@ if (!Object.keys) {
       if (base.header.length === 0) { /* if not found a record, a message is automatically add */
         base.msg(); /* add a message */
       }
-      else {        
+      else {
         var columns = base.getColumns();
         $.each(base.header, function(key, header) {
           var arr = [];
@@ -164,12 +164,18 @@ if (!Object.keys) {
 
     base.getColumns = function() {
       return $('#'+base.$el.attr('id')+' thead tr th').map(function() {
+        return $(this).text();
+      });
+    };
+
+    base.getColumnsField = function() {
+      return $('#'+base.$el.attr('id')+' thead tr th').map(function() {
         return $(this).attr('field');
       });
     };
 
     base.getRows = function(i) {
-      var columns = base.getColumns();
+      var columns = base.getColumnsField();
       var table = $('#'+base.$el.attr('id')+' tbody tr:nth-child('+(i+1)+')').map(function(i) {
         var row = {};
         $(this).find('td').each(function(i) {
