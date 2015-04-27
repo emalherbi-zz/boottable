@@ -16,7 +16,7 @@ Anyone and everyone is welcome to contribute.
 License
 -------
 
-[MIT License © Eduardo Malherbi Martins](https://github.com/emalherbi/bootTable/blob/master/LICENSE)
+[MIT License © Eduardo Malherbi Martins](http://en.wikipedia.org/wiki/MIT_License)
 
 Author
 ------
