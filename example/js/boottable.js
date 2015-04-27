@@ -1,7 +1,3 @@
-/*!
-* bootTable vs 2.0.0 by emalherbi.com
-*/
-
 /* IE8 trim function not exist */
 if(typeof String.prototype.trim !== 'function') {
   String.prototype.trim = function() {
@@ -99,12 +95,13 @@ if (!Object.keys) {
     * remove all div loaders
     */
     base.endLoader = function() {
-      base.clr(); /* clear */
-      base.msg(); /* adds a default message when no records found in table */
+      // do nothing...
       return true;
     };
 
     /*
+    * This method to be deprecated.
+    *
     * Please. If necessary insert a large amount of records in the table, use the method addall.
     */
     base.add = function() {
