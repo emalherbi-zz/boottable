@@ -7,10 +7,14 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   // Load the plugin that validate files with JSHint.
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  // Load the plugin that validate files with CSSLint.
+  grunt.loadNpmTasks('grunt-contrib-csslint');
   // Load the plugin that copy files and directories.
   grunt.loadNpmTasks('grunt-contrib-copy');
   // Load the plugin that minify and concatenate ".js" files.
 	grunt.loadNpmTasks('grunt-contrib-uglify');
+  // Load the plugin that minify and concatenate ".css" files.
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
   // Publish to GitHub Pages with Grunt
   grunt.loadNpmTasks('grunt-gh-pages');
   // Bump package version, create tag, commit, push ...
@@ -39,25 +43,20 @@ module.exports = function(grunt) {
       },
       basic_and_extras: {
         files: {
-           "<%= properties.dist %>/<%= pkg.name %>.js" : ['<%= pkg.name %>.js']
+          "<%= properties.dist %>/<%= pkg.name %>.js"  : ['<%= pkg.name %>.js' ],
+          "<%= properties.dist %>/<%= pkg.name %>.css" : ['<%= pkg.name %>.css']
         },
       },
     },
 
-    /* put files not handled in other tasks here */
-    copy: {
-      test: {
-        files: [{
-          expand: true,
-          dot: true,
-          src: ['<%= pkg.name %>.js'],
-          dest: 'example/js/'
-        }]
-      }
-    },
-
+    /* js validate */
     jshint: {
       all: ['<%= pkg.name %>.js']
+    },
+
+    /* css validate */
+    csslint: {
+      all: ['<%= pkg.name %>.css']
     },
 
     /* js file minification */
@@ -69,6 +68,35 @@ module.exports = function(grunt) {
         files: {
           '<%= properties.dist %>/<%= pkg.name %>.min.js': ['<%= properties.dist %>/<%= pkg.name %>.js']
         }
+      }
+    },
+
+    cssmin: {
+      options: {
+        shorthandCompacting: false,
+        roundingPrecision: -1
+      },
+      target: {
+        files: {
+          '<%= properties.dist %>/<%= pkg.name %>.min.css': ['<%= properties.dist %>/<%= pkg.name %>.css']
+        }
+      }
+    },
+
+    /* put files not handled in other tasks here */
+    copy: {
+      test: {
+        files: [{
+          expand: true,
+          dot: true,
+          src: ['<%= pkg.name %>.js'],
+          dest: 'example/js/'
+        },{
+          expand: true,
+          dot: true,
+          src: ['<%= pkg.name %>.css'],
+          dest: 'example/css/'
+        }]
       }
     },
 
@@ -100,7 +128,9 @@ module.exports = function(grunt) {
     'clean',
     'concat',
     'jshint',
+    'csslint',
     'uglify',
+    'cssmin',
     'copy',
     'gh-pages'//,
     //'bump'

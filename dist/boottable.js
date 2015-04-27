@@ -1,12 +1,8 @@
 /*!
- * ejs-boottable v2.0.0 (https://github.com/emalherbi/boottable/)
+ * boottable v2.0.2 (https://github.com/emalherbi/bootTable/)
  * Copyright 2010-2015 emalherbi
  * Licensed under MIT (http://en.wikipedia.org/wiki/MIT_License)
  */
-/*!
-* bootTable vs 2.0.0 by emalherbi.com
-*/
-
 /* IE8 trim function not exist */
 if(typeof String.prototype.trim !== 'function') {
   String.prototype.trim = function() {
@@ -104,12 +100,13 @@ if (!Object.keys) {
     * remove all div loaders
     */
     base.endLoader = function() {
-      base.clr(); /* clear */
-      base.msg(); /* adds a default message when no records found in table */
+      // do nothing...
       return true;
     };
 
     /*
+    * This method to be deprecated.
+    *
     * Please. If necessary insert a large amount of records in the table, use the method addall.
     */
     base.add = function() {
