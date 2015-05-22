@@ -1,6 +1,6 @@
 {
   "name": "boottable",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "JQuery Plugin for Manipulating Tables.",
   "main": "boottable.js",
   "homepage": "https://github.com/emalherbi/bootTable/",
