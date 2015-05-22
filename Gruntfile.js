@@ -123,20 +123,24 @@ module.exports = function(grunt) {
 
 	});
 
-	// tasks
-  grunt.registerTask('deploy', [
+  // tasks
+  grunt.registerTask('build', [
     'clean',
     'concat',
     'jshint',
     'csslint',
     'uglify',
     'cssmin',
-    'copy',
+    'copy'
+  ]);
+
+  grunt.registerTask('deploy', [
+    'build',
     'gh-pages'//,
     //'bump'
   ]);
 
   grunt.registerTask('default', [
-    'deploy'
+    'build'
   ]);
 };
