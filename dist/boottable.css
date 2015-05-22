@@ -1,5 +1,5 @@
 /*!
- * boottable v2.0.2 (https://github.com/emalherbi/bootTable/)
+ * boottable v3.0.0 (https://github.com/emalherbi/bootTable/)
  * Copyright 2010-2015 emalherbi
  * Licensed under MIT (http://en.wikipedia.org/wiki/MIT_License)
  */
