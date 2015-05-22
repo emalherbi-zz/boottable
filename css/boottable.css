@@ -1,10 +1,154 @@
-.glyphicon { top: 0; }
+/* internationalization */
 
-table { font-size: 12px; }
+table .boottable-init td::after {
+  content: "No record found!";
+}
+table .boottable-load-label::after {
+  content: "Please, wait...";
+}
+.boottable-filter input::-webkit-input-placeholder::before { /* WebKit browsers */
+  content: "Search here...";
+  display: block;
+}
+.boottable-filter input:-moz-placeholder::before { /* Mozilla Firefox 4 to 18 */
+  content: "Search here...";
+  display: block;
+}
+.boottable-filter input::-moz-placeholder::before { /* Mozilla Firefox 19+ */
+  content: "Search here...";
+  display: block;
+}
+.boottable-filter input:-ms-input-placeholder::before { /* Internet Explorer 10+ */
+  content: "Search here...";
+  display: block;
+}
+
+/* generic */
+
+table {
+  font-size: 12px;
+}
+table tr {
+  height: 35px;
+}
+
+table tbody .selected {
+  background: #eeeeee;
+}
+
 @media screen and (max-width: 600px) {
-  table thead { display: none; }
-  table tr { margin-bottom: 10px; display: block; border-bottom: 2px solid #ddd; }
-  table td { display: block; text-align: right; font-size: 13px; border-bottom: 1px dotted #ccc; }
-  table td:last-child { border-bottom: 0; }
-  table td:before { content: attr(data-label); float: left; font-weight: bold; }
+  table thead {
+    display: none;
+  }
+
+  table tr {
+    height: 100%;
+  }
+
+  table tr {
+    border-bottom: 2px solid #ddd;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  table td {
+    border-bottom: 1px dotted #ccc;
+    display: block;
+    font-size: 13px;
+    text-align: right;
+  }
+
+  table td:last-child {
+    border-bottom: 0;
+  }
+
+  table td:before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+  }
+}
+
+/* table filter */
+
+.boottable-filter .glyphicon {
+  top: 0;
+}
+
+/* table fixed */
+
+.boottable-container {
+  width: 100%;
+  margin: auto;
+}
+.boottable-fixed {
+  background-color: #FFF;
+  border: none;
+  color: #000;
+  display: none;
+  position: fixed;
+  top: 0;
+  width: auto;
+  z-index: 100;
+}
+
+/* load panel */
+.boottable-load-panel {
+  padding-top: 2.8em;
+  padding-left: 0.5em;
+  text-align: left;
+  position: sticky;
+}
+.boottable-load-panel {
+  content: ' ';
+  position: absolute;
+  top: 0.8em;
+}
+.boottable-load-panel:before {
+  content: ' ';
+  position: absolute;
+  width: 1.7em;
+  height: 1.7em;
+  border: solid 2px transparent;
+  border-top-color: #29d;
+  border-left-color: #29d;
+  border-radius: 50%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+  animation: indicator 400ms linear infinite;
+  -moz-animation: indicator 400ms linear infinite;
+  -webkit-animation: indicator 400ms linear infinite;
+}
+@-webkit-keyframes indicator
+{
+  0% {
+    -ms-transform: rotate(0deg); /* IE 9 */
+    -webkit-transform: rotate(0deg); /* Chrome, Safari, Opera */
+    transform: rotate(0deg);
+  }
+  100% {
+    -ms-transform: rotate(360deg); /* IE 9 */
+    -webkit-transform: rotate(360deg); /* Chrome, Safari, Opera */
+    transform: rotate(360deg);
+  }
+}
+@keyframes indicator
+{
+  0% {
+    -ms-transform: rotate(0deg); /* IE 9 */
+    -webkit-transform: rotate(0deg); /* Chrome, Safari, Opera */
+    transform: rotate(0deg);
+  }
+  100% {
+    -ms-transform: rotate(360deg); /* IE 9 */
+    -webkit-transform: rotate(360deg); /* Chrome, Safari, Opera */
+    transform: rotate(360deg);
+  }
+}
+.boottable-load-label {
+  padding-top: 3px;
+  padding-left: 30px;
+  position: relative;
 }
