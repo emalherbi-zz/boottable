@@ -99,15 +99,17 @@ table tbody .selected {
 
 /* load panel */
 .boottable-load-panel {
-  padding-top: 2.8em;
+  /* padding-top: 2.8em; */
   padding-left: 0.5em;
   text-align: left;
   position: sticky;
 }
 .boottable-load-panel {
   content: ' ';
-  position: absolute;
-  top: 0.8em;
+  position: relative;
+  top: 0;
+  /*position: absolute;
+  top: 0.8em;*/
 }
 .boottable-load-panel:before {
   content: ' ';
