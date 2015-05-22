@@ -1,5 +1,5 @@
 /*!
- * boottable v2.0.2 (https://github.com/emalherbi/bootTable/)
+ * boottable v3.0.0 (https://github.com/emalherbi/bootTable/)
  * Copyright 2010-2015 emalherbi
  * Licensed under MIT (http://en.wikipedia.org/wiki/MIT_License)
  */
@@ -76,7 +76,7 @@ if (!Object.keys) {
     */
     base.msg = function() {
       var colspan = $('#'+base.$el.attr('id')+' thead tr th').length;
-      base.$el.append('<tr><td colspan="'+colspan+'" >'+base.options.msg+'</td></tr>');
+      base.$el.append('<tr class="boottable-init" ><td colspan="'+colspan+'" ></td></tr>');
       return true;
     };
 
@@ -91,7 +91,7 @@ if (!Object.keys) {
       base.$el.append('<tr><td colspan="'+colspan+'" ></td></tr>');
 
       /* add progress */
-      var html = ' <img src=\'data:image/gif;base64,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\' alt="Progress" >';
+      var html = '<div class="boottable-load-panel" ><div class="boottable-load-label" ></div></div>';
       base.$el.find('tbody tr td').html( html );
       return true;
     };
@@ -252,9 +252,6 @@ if (!Object.keys) {
     };
 
     base.sel = function() {
-      var style = $('<style>' + '#' + base.$el.attr('id') + ' tbody tr.selected { background: ' + base.options.selectedBackground + ' !important; }</style>');
-      $('html > head').append(style);
-
       $('#' + base.$el.attr('id')).delegate( "tbody tr", "click", function(event) {
         $(event.currentTarget).parent().children().removeClass('selected');
         $(event.currentTarget).addClass('selected');
@@ -311,23 +308,104 @@ if (!Object.keys) {
 
     base.filter = function() {
       var layout = "";
-      layout += "<div class=\"input-group\" style=\"margin-bottom: 5px;\" > <span class=\"input-group-addon glyphicon glyphicon-search \"></span>";
-      layout += "<input id=\"filter-" + base.$el.attr('id') + "\" type=\"text\" class=\"form-control\" placeholder=\"" + base.options.filterPlaceholder + "\" >";
+      layout += "<div class=\"boottable-filter input-group\" style=\"margin-bottom: 5px;\" > <span class=\"input-group-addon glyphicon glyphicon-search \"></span>";
+      layout += "<input id=\"filter-" + base.$el.attr('id') + "\" type=\"text\" class=\"boottable-filter-placeholder form-control\" placeholder=\" \" >";
       layout += "</div>";
 
       if ($('#filter-' + base.$el.attr('id')).length === 0) {
         base.$el.find('tbody').addClass("searchable");
         base.$el.parent().prepend(layout);
-        $('#filter-' + base.$el.attr('id')).keyup(function() {
+        $('#filter-' + base.$el.attr('id')).keyup(function(e) {
+          var $el = $(e.delegateTarget);
+          var id  = $el.attr('id').replace('filter-', '');
+
           var rex = new RegExp($(this).val(), 'i');
-          $('#' + base.$el.attr('id') + ' .searchable tr').hide();
-          $('#' + base.$el.attr('id') + ' .searchable tr').filter(function () {
+          $('#' + id + ' .searchable tr').hide();
+          $('#' + id + ' .searchable tr').filter(function () {
             return rex.test($(this).text());
           }).show();
         });
       }
 
       return true;
+    };
+
+    base.fixHeadFoot = function() {
+      var $fixed = null;
+      var $el = base.$el;
+
+      function initHeadFoot() {
+        $el.wrap('<div class="boottable-container" />');
+
+        $fixed = $el.clone();
+        $fixed.attr('id', $fixed.attr('id') + '-fixed');
+        $fixed.find("tbody").remove().end().addClass("boottable-fixed").insertBefore($el);
+
+        resizeFixedHeadFoot();
+      }
+
+      function resizeFixedHeadFoot() {
+        $fixed.find("th").each(function(index) {
+          $(this).css("width", $el.find("th").eq(index).outerWidth() + "px");
+        });
+      }
+
+      function scrollFixedHeadFoot() {
+        var offset = $(this).scrollTop(),
+          tableOffsetTop = $el.offset().top,
+          tableOffsetBottom = tableOffsetTop + $el.height() - $el.find("thead").height();
+
+        if (offset < tableOffsetTop || offset > tableOffsetBottom) {
+          $el.find("tfoot").css('display', 'table-footer-group');
+          $fixed.hide();
+        } else if (offset >= tableOffsetTop && offset <= tableOffsetBottom && $fixed.is(":hidden")) {
+          $el.find("tfoot").css('display', 'none');
+          $fixed.show();
+        }
+      }
+
+      $(window).resize(resizeFixedHeadFoot);
+      $(window).scroll(scrollFixedHeadFoot);
+
+      initHeadFoot();
+    };
+
+    base.fixHead = function() {
+      var $fixed = null;
+      var $el = base.$el;
+
+      function initHead() {
+        $el.wrap('<div class="boottable-container" />');
+
+        $fixed = $el.clone();
+        $fixed.attr('id', $fixed.attr('id') + '-fixed');
+        $fixed.find("tbody").remove().end().find("tfoot").remove().end().addClass("boottable-fixed").insertBefore($el);
+
+        resizeFixedHead();
+      }
+
+      function resizeFixedHead() {
+        $fixed.find("th").each(function(index) {
+          $(this).css("width", $el.find("th").eq(index).outerWidth() + "px");
+        });
+      }
+
+      function scrollFixedHead() {
+        var offset = $(this).scrollTop(),
+          tableOffsetTop = $el.offset().top,
+          tableOffsetBottom = tableOffsetTop + $el.height() - $el.find("thead").height();
+
+        if (offset < tableOffsetTop || offset > tableOffsetBottom) {
+          $fixed.hide();
+        } else if (offset >= tableOffsetTop && offset <= tableOffsetBottom && $fixed.is(":hidden")) {
+          $fixed.show();
+        }
+      }
+
+      $(window).resize(resizeFixedHead);
+      $(window).scroll(scrollFixedHead);
+
+      initHead();
     };
 
     base.initialize();
@@ -342,11 +420,17 @@ if (!Object.keys) {
     else if (base.options.method == 'msg') {
       r = base.msg();
     }
-    else if (base.options.method == 'startloader' || base.options.method == 'startLoader') {
+    else if (base.options.method == 'loader' || base.options.method == 'startloader' || base.options.method == 'startLoader') {
       r = base.startLoader();
     }
     else if (base.options.method == 'endloader' || base.options.method == 'endLoader') {
       r = base.endLoader();
+    }
+    else if (base.options.method == 'fixhead' || base.options.method == 'fixHead') {
+      r = base.fixHead();
+    }
+    else if (base.options.method == 'fixheadfoot' || base.options.method == 'fixHeadFoot') {
+      r = base.fixHeadFoot();
     }
     else if (base.options.method == 'add') {
       r = base.add();
@@ -392,13 +476,9 @@ if (!Object.keys) {
 
   $.Table.boot.defaultOptions = {
     method : '', /* call method plugin */
-    msg : 'No record found!', /* adds a default message when no records found in table */
 
     selected : false, /* add option selected when click on tr */
     filter : false, /* add filter on table */
-
-    selectedBackground : '#d0efff',
-    filterPlaceholder : 'Search here...', /* placeholder from input */
 
     getSelectedItem : false, /* get item selected */
     getItens : false /* get item selected */

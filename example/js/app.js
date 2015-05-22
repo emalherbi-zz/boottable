@@ -2,91 +2,179 @@ var data = [
 {
   "ID_USER": 1,
   "NAME": "Stefanie Melendez",
-  "PASSWORD": 38,
+  "MONEY": 10.89,
   "ACTIVE": false
 },
 {
   "ID_USER": 2,
   "NAME": "Gillespie Short",
-  "PASSWORD": 22,
+  "MONEY": 22.52,
   "ACTIVE": false
 },
 {
   "ID_USER": 3,
   "NAME": "Henrietta Langley",
-  "PASSWORD": 28,
+  "MONEY": 28.11,
   "ACTIVE": true
 },
 {
   "ID_USER": 4,
   "NAME": "Marisa Fitzpatrick",
-  "PASSWORD": 27,
+  "MONEY": 27.44,
   "ACTIVE": true
 },
 {
   "ID_USER": 5,
   "NAME": "Benson Holloway",
-  "PASSWORD": 24,
+  "MONEY": 24.96,
   "ACTIVE": true
 },
 {
   "ID_USER": 6,
   "NAME": "Hunter Fox",
-  "PASSWORD": 37,
+  "MONEY": 37.12,
   "ACTIVE": true
 }
 ];
 
-var $table = $('#table-users');
-var User = {
+var Table = {
+  onclick : function() {
+    $('#btn-init-code').click(function() {
+      $('#modal #modal-code').html( $('#code-init').html() );
+      $('#modal').modal('show');
+    });
+    $('#btn-start-code').click(function() {
+      $('#modal #modal-code').html( $('#code-start').html() );
+      $('#modal').modal('show');
+    });
+    $('#btn-filter-code').click(function() {
+      $('#modal #modal-code').html( $('#code-filter').html() );
+      $('#modal').modal('show');
+    });
+    $('#btn-add-all-json-code').click(function() {
+      $('#modal #modal-code').html( $('#code-add-all-json').html() );
+      $('#modal').modal('show');
+    });
+    $('#btn-add-all-code').click(function() {
+      $('#modal #modal-code').html( $('#code-add-all').html() );
+      $('#modal').modal('show');
+    });
+    $('#btn-get-all-itens-code').click(function() {
+      $('#modal #modal-code').html( $('#code-get-all-itens').html() );
+      $('#modal').modal('show');
+    });
+    $('#btn-get-selected-item-code').click(function() {
+      $('#modal #modal-code').html( $('#code-get-selected-item').html() );
+      $('#modal').modal('show');
+    });
+    $('#btn-fix-head-code').click(function() {
+      $('#modal #modal-code').html( $('#code-fix-head').html() );
+      $('#modal').modal('show');
+    });
+    $('#btn-fix-head-foot-code').click(function() {
+      $('#modal #modal-code').html( $('#code-fix-head-foot').html() );
+      $('#modal').modal('show');
+    });
+    $('#btn-and-more-code').click(function() {
+      $('#modal #modal-code').html( $('#code-and-more').html() );
+      $('#modal').modal('show');
+    });
+  },
   init : function() {
-    $table.bootTable({ method : 'init', msg : 'No record found!', selected : true, selectedBackground : '#d0efff', filter: true });
 
-    $('#btn-start').click(function() {
-      $table.bootTable({ method : 'startLoader' })
+    Table.onclick();
+
+    /* TABLE INIT */
+    $('#table-init').bootTable({ method : 'init' });
+
+    /* TABLE START LOADER */
+    $('#table-start').bootTable({ method : 'init' });
+    $('#table-start').bootTable({ method : 'startloader' });
+
+    /* TABLE FILTER */
+    $('#table-filter').bootTable({ method : 'init' });
+    $('#table-filter').bootTable({ filter : true });
+    $('#table-filter').bootTableJson(data);
+
+    /* TABLE ADD ALL JSON */
+    $('#table-add-all-json').bootTable({ method : 'init' });
+    $('#table-add-all-json').bootTableJson(data);
+
+    /* TABLE USERS ADD ALL */
+    var arrHeader = [];
+    var arrValues = [];
+    $.each(data, function(key, values) {
+      var header = {
+        "ID_USER" : values.ID_USER
+      };
+      arrHeader.push(header);
+      var values = {
+        "ID_USER"  : values.ID_USER,
+        "NAME" 		 : values.NAME,
+        "MONEY"    : values.MONEY,
+        "ACTIVE" 	 : ( values.ACTIVE === true ) ? 'Yes' : 'No'
+      };
+      arrValues.push(values);
+    });
+    $('#table-add-all').bootTable({ method : 'init' });
+    $('#table-add-all').bootTable({ method : 'addall' }, arrHeader, arrValues);
+
+    /* TABLE GET ALL ITENS */
+    $('#table-get-all-itens').bootTable({ method : 'init' });
+    $('#table-get-all-itens').bootTableJson(data);
+
+    $('#btn-get-all-itens').click(function() {
+      $('#modal #modal-code').html(JSON.stringify($('#table-get-all-itens').getItens()));
+      $('#modal').modal('show');
     });
 
-    $('#btn-end').click(function() {
-      $table.bootTable({ method : 'endLoader' })
-    });
+    /* TABLE GET SELECTED ITEM */
+    $('#table-get-selected-item').bootTable({ method : 'init', selected : true });
+    $('#table-get-selected-item').bootTableJson(data);
 
-    $('#btn-get-all').click(function() {
-      $('#txt-get-all').html(JSON.stringify($table.getItens()));
-    });
-
-    $('#btn-get-item').click(function() {
-      var selected = $table.find('tr').hasClass('selected');
+    $('#btn-get-selected-item').click(function() {
+      var selected = $('#table-get-selected-item').find('tr').hasClass('selected');
 
       if (!selected) {
         alert('Please select a row!');
         return;
       }
 
-      $('#txt-get-all').html(JSON.stringify($table.getSelectedItem()));
+      $('#modal #modal-code').html(JSON.stringify($('#table-get-selected-item').getSelectedItem()));
+      $('#modal').modal('show');
     });
 
-    $table.on('BOOTTABLE_EVENT_CLICK_ROW', function(e, params) {
+    /* TABLE FIX HEAD */
+    $('#table-fix-head').bootTable({ method : 'init' });
+    $('#table-fix-head').bootTableJson(data);
+    $('#table-fix-head').bootTable({ method : 'fixHead' });
+
+    /* TABLE FIX HEAD AND FOOT */
+    $('#table-fix-head-foot').bootTable({ method : 'init' });
+    $('#table-fix-head-foot').bootTableJson(data);
+    $('#table-fix-head-foot').bootTable({ method : 'fixHeadFoot' });
+
+    /* AND MORE */
+    $('#table-users').bootTable({ method : 'init', selected : true });
+
+    $('#table-users').on('BOOTTABLE_EVENT_CLICK_ROW', function(e, params) {
       $('#txt-event-click-row').html(JSON.stringify(params));
     });
-
-    $table.on('BOOTTABLE_EVENT_ENTER_ROW', function(e, params) {
+    $('#table-users').on('BOOTTABLE_EVENT_ENTER_ROW', function(e, params) {
       $('#txt-event-enter-row').html(JSON.stringify(params));
     });
-
-    $table.on('BOOTTABLE_EVENT_DOWN_ROW', function(e, params) {
+    $('#table-users').on('BOOTTABLE_EVENT_DOWN_ROW', function(e, params) {
       $('#txt-event-down-up-row').html(JSON.stringify(params));
     });
-
-    $table.on('BOOTTABLE_EVENT_UP_ROW', function(e, params) {
+    $('#table-users').on('BOOTTABLE_EVENT_UP_ROW', function(e, params) {
       $('#txt-event-down-up-row').html(JSON.stringify(params));
     });
 
     $('#btn-all').click(function() {
-      User.all();
+      Table.all();
     });
-    User.all();
 
-    // $table.bootTableJson(data);
+    Table.all();
   },
   all : function() {
     var arrHeader = [];
@@ -101,21 +189,21 @@ var User = {
       var values = {
         "ID_USER"  : values.ID_USER,
         "NAME" 		 : values.NAME,
-        "PASSWORD" : values.PASSWORD,
+        "MONEY"    : values.MONEY,
         "ACTIVE" 	 : ( values.ACTIVE === true ) ? 'Yes' : 'No',
-        "EDIT" 		 : '<div onclick="User.edit(' + values.ID_USER + ')" class="btn btn-warning" ><span class="glyphicon glyphicon-pencil"></span></div>',
-        "DELETE" 	 : '<div onclick="User.delete(' + values.ID_USER + ')" class="btn btn-danger" ><span class="glyphicon glyphicon-trash"></span></div>'
+        "EDIT" 		 : '<div onclick="Table.edit(' + values.ID_USER + ')" class="btn btn-warning" ><span class="glyphicon glyphicon-pencil"></span></div>',
+        "DELETE" 	 : '<div onclick="Table.delete(' + values.ID_USER + ')" class="btn btn-danger" ><span class="glyphicon glyphicon-trash"></span></div>'
       };
       arrValues.push(values);
     });
 
-    $table.bootTable({ method : 'addall' }, arrHeader, arrValues);
+    $('#table-users').bootTable({ method : 'addall' }, arrHeader, arrValues);
   },
   edit : function( id ) {
     var params = {
       "ID_USER" : id
     };
-    var edt = $table.bootTable({
+    var edt = $('#table-users').bootTable({
       method : 'edt'
     }, params);
 
@@ -127,17 +215,16 @@ var User = {
       var params = {
         "ID_USER" : id
       };
-      var del = $table.bootTable({
+      var del = $('#table-users').bootTable({
         method : 'del'
       }, params);
       if (del) {
         $('#txt-get-all').html( 'Record Delete!' );
       }
-
     }
   }
 };
 
 $(document).ready(function() {
-  User.init();
+  Table.init();
 });
