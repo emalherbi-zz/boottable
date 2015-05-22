@@ -1,7 +1,7 @@
 bootTable
 =========
 
-JQuery Plugin for Manipulating Tables
+JQuery Plugin for Manipulating Tables.
 
 Usage Plugin
 ------------
