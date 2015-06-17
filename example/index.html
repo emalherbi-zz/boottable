@@ -104,6 +104,22 @@ $('#table').bootTable({ method : 'init' });
 $('#table').bootTable({ method : 'fixHeadFoot' });</code></pre>
 		</div>
 
+		<div id="code-calculate-column" >
+<pre><code># Init Table
+$('#table').bootTable({ method : 'init' });
+
+# Fix Head and Foot
+$('#table').calculateColumn(3);</code></pre>
+		</div>
+
+		<div id="code-calculate-column-by-field" >
+<pre><code># Init Table
+$('#table').bootTable({ method : 'init' });
+
+# Fix Head and Foot
+$('#table').calculateColumnByField('MONEY');</code></pre>
+		</div>
+
 		<div id="code-and-more" >
 <pre><code># Init Table
 $('#table-users').bootTable({ method : 'init', selected : true });
@@ -422,9 +438,69 @@ Table.delete();
 						</tbody>
 						<tfoot>
     					<tr>
-      					<td colspan="4" >Foot</td>
+      					<td colspan="4" >Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</td>
     					</tr>
   					</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="page-header">
+					<h3>Calculate Column.
+						<button id="btn-calculate-column" name="btn-calculate-column" type="button" class="btn btn-warning">Show Calculate</button>
+						<button id="btn-calculate-column-code" name="btn-calculate-column-code" type="button" class="btn btn-primary">&lt;/code&gt;</button>
+					</h3>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="table-responsive" >
+					<table id="table-calculate-column" name="table-calculate-column" class="table table-bordered" tabindex="0" >
+						<thead>
+							<tr>
+								<th field="ID_USER" width='80px' >Code</th>
+								<th field="NAME" >Name</th>
+								<th field="MONEY" >Money</th>
+								<th field="ACTIVE" width='80px' >Active</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="page-header">
+					<h3>Calculate Column By Field.
+						<button id="btn-calculate-column-by-field" name="btn-calculate-column-by-field" type="button" class="btn btn-warning">Show Calculate</button>
+						<button id="btn-calculate-column-by-field-code" name="btn-calculate-column-by-field-code" type="button" class="btn btn-primary">&lt;/code&gt;</button>
+					</h3>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="table-responsive" >
+					<table id="table-calculate-column-by-field" name="table-calculate-column-by-field" class="table table-bordered" tabindex="0" >
+						<thead>
+							<tr>
+								<th field="ID_USER" width='80px' >Code</th>
+								<th field="NAME" >Name</th>
+								<th field="MONEY" >Money</th>
+								<th field="ACTIVE" width='80px' >Active</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
 					</table>
 				</div>
 			</div>
