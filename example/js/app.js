@@ -75,13 +75,21 @@ var Table = {
       $('#modal #modal-code').html( $('#code-fix-head-foot').html() );
       $('#modal').modal('show');
     });
+    $('#btn-calculate-column-code').click(function() {
+      $('#modal #modal-code').html( $('#code-calculate-column').html() );
+      $('#modal').modal('show');
+    });
+    $('#btn-calculate-column-by-field-code').click(function() {
+      $('#modal #modal-code').html( $('#code-calculate-column-by-field').html() );
+      $('#modal').modal('show');
+    });
     $('#btn-and-more-code').click(function() {
       $('#modal #modal-code').html( $('#code-and-more').html() );
       $('#modal').modal('show');
     });
   },
   init : function() {
-
+    var dataJson = JSON.stringify(data);
     Table.onclick();
 
     /* TABLE INIT */
@@ -94,11 +102,11 @@ var Table = {
     /* TABLE FILTER */
     $('#table-filter').bootTable({ method : 'init' });
     $('#table-filter').bootTable({ filter : true });
-    $('#table-filter').bootTableJson(data);
+    $('#table-filter').bootTableJson(dataJson);
 
     /* TABLE ADD ALL JSON */
     $('#table-add-all-json').bootTable({ method : 'init' });
-    $('#table-add-all-json').bootTableJson(data);
+    $('#table-add-all-json').bootTableJson(dataJson);
 
     /* TABLE USERS ADD ALL */
     var arrHeader = [];
@@ -121,7 +129,7 @@ var Table = {
 
     /* TABLE GET ALL ITENS */
     $('#table-get-all-itens').bootTable({ method : 'init' });
-    $('#table-get-all-itens').bootTableJson(data);
+    $('#table-get-all-itens').bootTableJson(dataJson);
 
     $('#btn-get-all-itens').click(function() {
       $('#modal #modal-code').html(JSON.stringify($('#table-get-all-itens').getItens()));
@@ -130,7 +138,7 @@ var Table = {
 
     /* TABLE GET SELECTED ITEM */
     $('#table-get-selected-item').bootTable({ method : 'init', selected : true });
-    $('#table-get-selected-item').bootTableJson(data);
+    $('#table-get-selected-item').bootTableJson(dataJson);
 
     $('#btn-get-selected-item').click(function() {
       var selected = $('#table-get-selected-item').find('tr').hasClass('selected');
@@ -146,13 +154,29 @@ var Table = {
 
     /* TABLE FIX HEAD */
     $('#table-fix-head').bootTable({ method : 'init' });
-    $('#table-fix-head').bootTableJson(data);
+    $('#table-fix-head').bootTableJson(dataJson);
     $('#table-fix-head').bootTable({ method : 'fixHead' });
 
     /* TABLE FIX HEAD AND FOOT */
     $('#table-fix-head-foot').bootTable({ method : 'init' });
-    $('#table-fix-head-foot').bootTableJson(data);
+    $('#table-fix-head-foot').bootTableJson(dataJson);
     $('#table-fix-head-foot').bootTable({ method : 'fixHeadFoot' });
+
+    /* TABLE CALCULATE COLUMN */
+    $('#table-calculate-column').bootTable({ method : 'init' });
+    $('#table-calculate-column').bootTableJson(dataJson);
+    $('#btn-calculate-column').click(function() {
+      $('#modal #modal-code').html( $('#table-calculate-column').calculateColumn(3) );
+      $('#modal').modal('show');
+    });
+
+    /* TABLE CALCULATE COLUMN BY FIELD */
+    $('#table-calculate-column-by-field').bootTable({ method : 'init' });
+    $('#table-calculate-column-by-field').bootTableJson(dataJson);
+    $('#btn-calculate-column-by-field').click(function() {
+      $('#modal #modal-code').html( $('#table-calculate-column-by-field').calculateColumn('MONEY') );
+      $('#modal').modal('show');
+    });
 
     /* AND MORE */
     $('#table-users').bootTable({ method : 'init', selected : true });
