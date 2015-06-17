@@ -133,6 +133,7 @@ if (!Object.keys) {
       }
       else {
         var columns = base.getColumns();
+        var columnsField = base.getColumnsField();
         $.each(base.header, function(key, header) {
           var arr = [];
           $.each(header, function(i, v) {
@@ -144,10 +145,18 @@ if (!Object.keys) {
           tr += "<tr " + join + " >";
 
           var values = base.values[key], y = 0;
-          $.each(values, function(i, v) {
-            tr += "<td data-label='" + columns[y] + "' >" + v + "</td>";
-            y++;
-          });
+          if (base.options.method == 'addAllJson' || base.options.method == 'allJson' || base.options.method == 'json') {
+            $.each(columnsField, function(ii, vv) {
+              tr += "<td data-label='" + columns[y] + "' >" + values[vv] + "</td>";
+              y++;
+            });
+          }
+          else {
+            $.each(values, function(i, v) {
+              tr += "<td data-label='" + columns[y] + "' >" + v + "</td>";
+              y++;
+            });
+          }
 
           tr += "</tr>";
           itens += tr;
@@ -207,6 +216,54 @@ if (!Object.keys) {
         return base.getRows(i);
       }).get();
       return rows;
+    };
+
+    base.calculateColumn = function() {
+      var vlr = 0;
+      base.$el.find("tbody tr > td:nth-child("+base.options.column+")").each(function(i, el) {
+        var v = null;
+        if ($(el).find('input').length > 0) {
+          v = $(el).find('input').val();
+        } else {
+          if ($(el).find('span').length > 0) {
+            v = $(el).find('span').text();
+          } else {
+            v = el.innerHTML;
+          }
+        }
+        v = v.replace("$", "").replace("R$", "");
+
+        if (isNaN(v)) { // is NaN
+          var pos = v.lastIndexOf(".");
+          var cat = v.charAt(pos);
+
+          if (cat === '.') {
+            vlr += Number(v.replace(/,/g, ""));
+          } else {
+            vlr += Number(v.replace(/\./g, "").replace(",", "."));
+          }
+        } else {
+          vlr += Number(v);
+        }
+      });
+      return vlr;
+    };
+
+    base.calculateColumnByField = function() {
+      var columnsField = base.getColumnsField();
+
+      var key = -1;
+      $.each(columnsField, function(i, v) {
+        if (base.options.columnByField === v) {
+          key = (i + 1);
+        }
+      });
+      if (key !== -1) {
+        base.options.column = key;
+        return base.calculateColumn();
+      }
+
+      return 0;
     };
 
     base.edit = function() {
@@ -440,7 +497,16 @@ if (!Object.keys) {
       r = base.delete();
     }
     else if (base.options.method == 'addAllJson' || base.options.method == 'allJson' || base.options.method == 'json') {
+      base.header = jQuery.parseJSON(base.header);
+      base.values = jQuery.parseJSON(base.values);
+
       r = base.addAll();
+    }
+    else if (base.options.method == 'calculateColumn' || base.options.method == 'calculatecolumn') {
+      r = base.calculateColumn();
+    }
+    else if (base.options.method == 'calculateColumnByField' || base.options.method == 'calculatecolumnbyfield') {
+      r = base.calculateColumnByField();
     }
 
     // ***************** //
@@ -475,6 +541,9 @@ if (!Object.keys) {
     selected : false, /* add option selected when click on tr */
     filter : false, /* add filter on table */
 
+    column: 0,
+    columnByField: '',
+
     getSelectedItem : false, /* get item selected */
     getItens : false /* get item selected */
   };
@@ -501,6 +570,26 @@ if (!Object.keys) {
 
   $.fn.getBootTable = function() {
     return this.data("Table.boot");
+  };
+
+  $.fn.calculateColumn = function(column) {
+    var r = null;
+
+    this.each(function() {
+      r = $.Table.boot(this, null, null, { method : 'calculateColumn', column : column });
+    });
+
+    return r;
+  };
+
+  $.fn.calculateColumnByField = function(columnByField) {
+    var r = null;
+
+    this.each(function() {
+      r = $.Table.boot(this, null, null, { method : 'calculateColumnByField', columnByField : columnByField });
+    });
+
+    return r;
   };
 
   $.fn.getSelectedItem = function() {
