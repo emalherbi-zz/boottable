@@ -108,7 +108,7 @@ $('#table').bootTable({ method : 'fixHeadFoot' });</code></pre>
 <pre><code># Init Table
 $('#table').bootTable({ method : 'init' });
 
-# Fix Head and Foot
+# Calculate Column 
 $('#table').calculateColumn(3);</code></pre>
 		</div>
 
@@ -116,8 +116,16 @@ $('#table').calculateColumn(3);</code></pre>
 <pre><code># Init Table
 $('#table').bootTable({ method : 'init' });
 
-# Fix Head and Foot
+# Calculate Column by Field
 $('#table').calculateColumnByField('MONEY');</code></pre>
+		</div>
+
+		<div id="code-get-itens-count" >
+<pre><code># Init Table
+$('#table').bootTable({ method : 'init' });
+
+# Get Itens Count, '5' => add zeros left
+$('#table').getItensCount('5');</code></pre>
 		</div>
 
 		<div id="code-and-more" >
@@ -491,6 +499,36 @@ Table.delete();
 			<div class="col-md-12">
 				<div class="table-responsive" >
 					<table id="table-calculate-column-by-field" name="table-calculate-column-by-field" class="table table-bordered" tabindex="0" >
+						<thead>
+							<tr>
+								<th field="ID_USER" width='80px' >Code</th>
+								<th field="NAME" >Name</th>
+								<th field="MONEY" >Money</th>
+								<th field="ACTIVE" width='80px' >Active</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="page-header">
+					<h3>Count Rows from Table.
+						<button id="btn-get-itens-count" name="btn-get-itens-count" type="button" class="btn btn-warning">Show</button>
+						<button id="btn-get-itens-count-code" name="btn-get-itens-count-code" type="button" class="btn btn-primary">&lt;/code&gt;</button>
+					</h3>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="table-responsive" >
+					<table id="table-get-itens-count" name="table-get-itens-count" class="table table-bordered" tabindex="0" >
 						<thead>
 							<tr>
 								<th field="ID_USER" width='80px' >Code</th>

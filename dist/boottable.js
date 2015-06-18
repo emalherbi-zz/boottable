@@ -1,5 +1,5 @@
 /*!
- * boottable v3.0.3 (https://github.com/emalherbi/bootTable/)
+ * boottable v3.0.4 (https://github.com/emalherbi/bootTable/)
  * Copyright 2010-2015 emalherbi
  * Licensed under MIT (http://en.wikipedia.org/wiki/MIT_License)
  */
@@ -102,6 +102,15 @@ if (!Object.keys) {
     base.endLoader = function() {
       // do nothing...
       return true;
+    };
+
+    var addZerosLeft = function(str, max) {
+      str = String( str );
+      return ( str.length < max ) ? addZerosLeft("0" + str, max) : str;
+    };
+
+    base.getItensCount = function() {
+      return addZerosLeft(base.$el.find('tbody tr').length, base.options.zerosLeft);
     };
 
     /*
@@ -239,8 +248,12 @@ if (!Object.keys) {
         v = v.replace("$", "").replace("R$", "");
 
         if (isNaN(v)) { // is NaN
-          var pos = v.lastIndexOf(".");
-          var cat = v.charAt(pos);
+          var point = v.lastIndexOf(".");
+          var comma = v.lastIndexOf(",");
+          var cat = v.charAt(point);
+          if (comma > point) {
+            cat = v.charAt(comma);
+          }
 
           if (cat === '.') {
             vlr += Number(v.replace(/,/g, ""));
@@ -513,6 +526,9 @@ if (!Object.keys) {
     else if (base.options.method == 'calculateColumnByField' || base.options.method == 'calculatecolumnbyfield') {
       r = base.calculateColumnByField();
     }
+    else if (base.options.method == 'getItensCount' || base.options.method == 'getitenscount') {
+      r = base.getItensCount();
+    }
 
     // ***************** //
 
@@ -548,6 +564,8 @@ if (!Object.keys) {
 
     column: 0,
     columnByField: '',
+
+    zerosLeft: '4',
 
     getSelectedItem : false, /* get item selected */
     getItens : false /* get item selected */
@@ -612,6 +630,16 @@ if (!Object.keys) {
 
     this.each(function() {
       r = $.Table.boot(this, null, null, { getItens : true });
+    });
+
+    return r;
+  };
+
+  $.fn.getItensCount = function(zerosLeft) {
+    var r = null;
+
+    this.each(function() {
+      r = $.Table.boot(this, null, null, { method : 'getItensCount', zerosLeft : zerosLeft });
     });
 
     return r;
