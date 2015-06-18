@@ -18,6 +18,11 @@ License
 
 [MIT License](http://en.wikipedia.org/wiki/MIT_License)
 
+Contributors
+------------
+
+[Ivan Augusto Hoinacki](http://ivanhoinacki.com/)
+
 Author
 ------
 

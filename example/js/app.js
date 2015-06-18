@@ -83,6 +83,10 @@ var Table = {
       $('#modal #modal-code').html( $('#code-calculate-column-by-field').html() );
       $('#modal').modal('show');
     });
+    $('#btn-get-itens-count-code').click(function() {
+      $('#modal #modal-code').html( $('#code-get-itens-count').html() );
+      $('#modal').modal('show');
+    });
     $('#btn-and-more-code').click(function() {
       $('#modal #modal-code').html( $('#code-and-more').html() );
       $('#modal').modal('show');
@@ -175,6 +179,14 @@ var Table = {
     $('#table-calculate-column-by-field').bootTableJson(dataJson);
     $('#btn-calculate-column-by-field').click(function() {
       $('#modal #modal-code').html( $('#table-calculate-column-by-field').calculateColumn('MONEY') );
+      $('#modal').modal('show');
+    });
+
+    /* TABLE GET ITENS COUNT */
+    $('#table-get-itens-count').bootTable({ method : 'init' });
+    $('#table-get-itens-count').bootTableJson(dataJson);
+    $('#btn-get-itens-count').click(function() {
+      $('#modal #modal-code').html( $('#table-get-itens-count').getItensCount('5') );
       $('#modal').modal('show');
     });
 
