@@ -1,12 +1,18 @@
-bootTable
+boottable
 =========
 
 JQuery Plugin for Manipulating Tables.
 
+Documentation
+------------
+
+boottable documentation, included in this repo in the docs directory.
+
 Usage Plugin
 ------------
 
-[Example](https://emalherbi.github.io/bootTable/)
+[Example](https://emalherbi.github.io/boottable/)
+- The page is outdated, it will be updated soon...
 
 Contributing
 ------------

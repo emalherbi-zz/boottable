@@ -79,15 +79,16 @@ if (!Object.keys) {
     * add div loader on page
     */
     base.startLoader = function() {
+      var html = '<div class="boottable-load-panel" ><div class="boottable-load-label" ></div></div>';
+      var top  = $(window).scrollTop();
+
       base.clr(); /* clear */
 
-      /* remove all body */
-      var colspan = base.$el.find('thead').find("tr").find('th').length;
-      base.$el.append('<tr><td colspan="'+colspan+'" ></td></tr>');
-
       /* add progress */
-      var html = '<div class="boottable-load-panel" ><div class="boottable-load-label" ></div></div>';
-      base.$el.find('tbody tr td').html( html );
+      var colspan = base.$el.find('thead').find("tr").find('th').length;
+      base.$el.find('tbody').append('<tr><td colspan="'+colspan+'" >' + html + '</td></tr>');
+
+      $(window).scrollTop(top);
       return true;
     };
 
@@ -105,7 +106,7 @@ if (!Object.keys) {
     };
 
     base.getItensCount = function() {
-      return addZerosLeft(base.$el.find('tbody tr').length, base.options.zerosLeft);
+      return addZerosLeft(base.$el.find('tbody tr').not(base.$el.find('.boottable-init')).length, base.options.params);
     };
 
     /*
@@ -227,9 +228,60 @@ if (!Object.keys) {
       return rows;
     };
 
+    // $('#table').bTGetItensByColumn({'0' : 'true'});
+    base.getItensByColumn = function() {
+      var rows   = [];
+      var params = base.options.params;
+      params     = [].concat(params);
+
+      $.each(params, function(kk, obj) {
+        var k = Object.keys(obj);
+        var v = obj[k];
+
+        rows = base.$el.find('tbody tr').map(function(i) {
+          var row   = base.getRows(i);
+          var keys  = Object.keys(row[0]);
+          var field = keys[k-1];
+
+          if (row[0][field] == v) {
+            return row;
+          }
+        }).get();
+      });
+
+      if (rows.length === 0) {
+        return false;
+      }
+      return rows;
+    };
+
+    // $('#table').bTGetItensByField({'SELECIONAR' : 'true'});
+    base.getItensByField = function() {
+      var rows   = [];
+      var params = base.options.params;
+      params     = [].concat(params);
+
+      $.each(params, function(kk, obj) {
+        var k = Object.keys(obj);
+        var v = obj[k];
+
+        rows = base.$el.find('tbody tr').map(function(i) {
+          var row   = base.getRows(i);
+          if (row[0][k] == v) {
+            return row;
+          }
+        }).get();
+      });
+
+      if (rows.length === 0) {
+        return false;
+      }
+      return rows;
+    };
+
     base.calculateColumn = function() {
       var vlr = 0;
-      base.$el.find("tbody tr > td:nth-child("+base.options.column+")").each(function(i, el) {
+      base.$el.find("tbody tr > td:nth-child("+base.options.params+")").each(function(i, el) {
         var v = null;
         if ($(el).find('input').length > 0) {
           v = $(el).find('input').val();
@@ -267,16 +319,76 @@ if (!Object.keys) {
 
       var key = -1;
       $.each(columnsField, function(i, v) {
-        if (base.options.columnByField === v) {
+        if (base.options.params === v) {
           key = (i + 1);
         }
       });
       if (key !== -1) {
-        base.options.column = key;
+        base.options.params = key;
         return base.calculateColumn();
       }
 
       return 0;
+    };
+
+    base.hideColumn = function() {
+      var arr = base.options.params;
+      arr     = [].concat(arr);
+      for (var i=0, len=arr.length; i<len; i++) {
+        base.$el.find('thead tr th:nth-child('+arr[i]+')').css('display', 'none');
+        base.$el.find('tbody tr td:nth-child('+arr[i]+')').css('display', 'none');
+      }
+      return true;
+    };
+
+    base.hideColumnByField = function() {
+      var loopTable = function(columns, field) {
+        $.each(columns, function(i, v) {
+          if (field === v) {
+            var key = (i + 1);
+            base.$el.find('thead tr th:nth-child('+key+')').css('display', 'none');
+            base.$el.find('tbody tr td:nth-child('+key+')').css('display', 'none');
+          }
+        });
+      };
+
+      var arr = base.options.params;
+      arr     = [].concat(arr);
+      var columnsField = base.getColumnsField();
+      for (var i=0, len=arr.length; i<len; i++) {
+        loopTable(columnsField, arr[i]);
+      }
+      return true;
+    };
+
+    base.showColumn = function() {
+      var arr = base.options.params;
+      arr     = [].concat(arr);
+      for (var i=0, len=arr.length; i<len; i++) {
+        base.$el.find('thead tr th:nth-child('+arr[i]+')').css('display', 'table-cell');
+        base.$el.find('tbody tr td:nth-child('+arr[i]+')').css('display', 'table-cell');
+      }
+      return true;
+    };
+
+    base.showColumnByField = function() {
+      var loopTable = function(columns, field) {
+        $.each(columns, function(i, v) {
+          if (field === v) {
+            var key = (i + 1);
+            base.$el.find('thead tr th:nth-child('+key+')').css('display', 'table-cell');
+            base.$el.find('tbody tr td:nth-child('+key+')').css('display', 'table-cell');
+          }
+        });
+      };
+
+      var arr = base.options.params;
+      arr     = [].concat(arr);
+      var columnsField = base.getColumnsField();
+      for (var i=0, len=arr.length; i<len; i++) {
+        loopTable(columnsField, arr[i]);
+      }
+      return true;
     };
 
     base.edit = function() {
@@ -373,7 +485,7 @@ if (!Object.keys) {
 
     base.filter = function() {
       var layout = "";
-      layout += "<div class=\"boottable-filter input-group\" style=\"margin-bottom: 5px;\" > <span class=\"input-group-addon glyphicon glyphicon-search \"></span>";
+      layout += "<div class=\"boottable-filter input-group\" style=\"margin-bottom: 5px;\" > <span class=\"input-group-addon glyphicon glyphicon-search glyphicon-table \"></span>";
       layout += "<input id=\"filter-" + base.$el.attr('id') + "\" type=\"text\" class=\"boottable-filter-placeholder form-control\" placeholder=\" \" >";
       layout += "</div>";
 
@@ -480,15 +592,18 @@ if (!Object.keys) {
       r = base.init();
     }
     else if (base.options.method == 'clr' || base.options.method == 'clear') {
+      console.log('Please. Use method bootTableInit! This method \'clear\' to be deprecated.');
       r = base.clr();
     }
     else if (base.options.method == 'msg') {
+      console.log('Please. Use method bootTableInit! This method \'msg\' to be deprecated.');
       r = base.msg();
     }
     else if (base.options.method == 'loader' || base.options.method == 'startloader' || base.options.method == 'startLoader') {
       r = base.startLoader();
     }
     else if (base.options.method == 'endloader' || base.options.method == 'endLoader') {
+      console.log('This method \'endloader\' to be deprecated.');
       r = base.endLoader();
     }
     else if (base.options.method == 'fixhead' || base.options.method == 'fixHead') {
@@ -497,17 +612,19 @@ if (!Object.keys) {
     else if (base.options.method == 'fixheadfoot' || base.options.method == 'fixHeadFoot') {
       r = base.fixHeadFoot();
     }
-    else if (base.options.method == 'add') {
-      r = base.add();
-    }
-    else if (base.options.method == 'addall' || base.options.method == 'addAll' || base.options.method == 'all') {
-      r = base.addAll();
-    }
     else if (base.options.method == 'edt' || base.options.method == 'edit') {
+      console.log('Please. Use method bTGetItensByField or bTGetItensByColumn! This method \'edit\' to be deprecated.');
       r = base.edit();
     }
     else if (base.options.method == 'del' || base.options.method == 'delete' || base.options.method == 'remove') {
       r = base.delete();
+    }
+    else if (base.options.method == 'add') {
+      console.log('Please. Use method bootTableAll or bootTableJson! This method \'add\' to be deprecated.');
+      r = base.add();
+    }
+    else if (base.options.method == 'addall' || base.options.method == 'addAll' || base.options.method == 'all') {
+      r = base.addAll();
     }
     else if (base.options.method == 'addAllJson' || base.options.method == 'allJson' || base.options.method == 'json') {
       base.header = jQuery.parseJSON(base.header);
@@ -524,6 +641,30 @@ if (!Object.keys) {
     else if (base.options.method == 'getItensCount' || base.options.method == 'getitenscount') {
       r = base.getItensCount();
     }
+    else if (base.options.method == 'hideColumn' || base.options.method == 'hidecolumn') {
+      r = base.hideColumn();
+    }
+    else if (base.options.method == 'hideColumnByField' || base.options.method == 'hidecolumnbyfield') {
+      r = base.hideColumnByField();
+    }
+    else if (base.options.method == 'showColumn' || base.options.method == 'showcolumn') {
+      r = base.showColumn();
+    }
+    else if (base.options.method == 'showColumnByField' || base.options.method == 'showcolumnbyfield') {
+      r = base.showColumnByField();
+    }
+    else if (base.options.method == 'getItensByColumn' || base.options.method == 'getitensbycolumn') {
+      r = base.getItensByColumn();
+    }
+    else if (base.options.method == 'getItensByField' || base.options.method == 'getitensbyfield') {
+      r = base.getItensByField();
+    }
+    else if (base.options.method == 'getItens' || base.options.method == 'getitens') {
+      r = base.getItens();
+    }
+    else if (base.options.method == 'getSelectedItem' || base.options.method == 'getselecteditem') {
+      r = base.getSelectedItem();
+    }
 
     // ***************** //
 
@@ -531,17 +672,10 @@ if (!Object.keys) {
     if ( base.options.selected === true ) {
       r = base.sel();
     }
-    /* get item selected */
-    if ( base.options.getSelectedItem === true ) {
-      r = base.getSelectedItem();
-    }
-    /* get itens */
-    if ( base.options.getItens === true ) {
-      r = base.getItens();
-    }
 
     // ***************** //
 
+    /* add option filter on table */
     if ( base.options.filter === true ) {
       r = base.filter();
     }
@@ -552,92 +686,235 @@ if (!Object.keys) {
   };
 
   $.Table.boot.defaultOptions = {
-    method : '', /* call method plugin */
-
+    method   : '',
+    params   : '',
     selected : false, /* add option selected when click on tr */
-    filter : false, /* add filter on table */
-
-    column: 0,
-    columnByField: '',
-
-    zerosLeft: '4',
-
-    getSelectedItem : false, /* get item selected */
-    getItens : false /* get item selected */
+    filter   : false /* add filter on table */
   };
 
   $.fn.bootTable = function(options, header, values) {
-    var r = null;
-
-    this.each(function() {
-      r = $.Table.boot(this, header, values, options);
+    return this.each(function() {
+      $.Table.boot(this, header, values, options);
     });
-
-    return r;
-  };
-
-  $.fn.bootTableJson = function(values) {
-    var r = null;
-
-    this.each(function() {
-      r = $.Table.boot(this, values, values, { method : 'addAllJson' });
-    });
-
-    return r;
   };
 
   $.fn.getBootTable = function() {
     return this.data("Table.boot");
   };
 
-  $.fn.calculateColumn = function(column) {
-    var r = null;
+  // add functions here!
 
-    this.each(function() {
-      r = $.Table.boot(this, null, null, { method : 'calculateColumn', column : column });
+  // edit
+  // delete
+
+  // OK
+  $.fn.bTInit        = function(filter, selected) { return this.bootTableInit(filter, selected); };
+  $.fn.bootTableInit = function(filter, selected) {
+    if (typeof filter === 'undefined') {
+      filter = false;
+    }
+    if (typeof selected === 'undefined') {
+      selected = true;
+    }
+    return this.each(function() {
+      $.Table.boot(this, null, null, { 'method' : 'init', 'filter' : filter, 'selected' : selected });
     });
+  };
 
+  // OK
+  $.fn.bTLoader        = function() { return this.bootTableLoader(); };
+  $.fn.bootTableLoader = function() {
+    return this.each(function() {
+      $.Table.boot(this, null, null, { 'method' : 'loader' });
+    });
+  };
+
+  // OK
+  $.fn.bTAddAll        = function(header, values) { return this.bootTableAddAll(header, values); };
+  $.fn.bootTableAddAll = function(header, values) {
+    if (typeof header === 'undefined') {
+      console.log('method \'bootTableAddAll\', header undefined!'); return false;
+    }
+    if (typeof values === 'undefined') {
+      console.log('method \'bootTableAddAll\', values undefined!'); return false;
+    }
+    return this.each(function() {
+      $.Table.boot(this, header, values, { 'method' : 'addAll' });
+    });
+  };
+
+  // OK
+  $.fn.bTAddAllJson        = function(values) { return this.bootTableAddAllJson(values); };
+  $.fn.bootTableAddAllJson = function(values) {
+    if (typeof values === 'undefined') {
+      console.log('method \'bootTableAddAllJson\', values undefined!'); return false;
+    }
+    return this.each(function() {
+      $.Table.boot(this, values, values, { 'method' : 'addAllJson' });
+    });
+  };
+
+  // OK
+  $.fn.bTCalculateColumn        = function(params) { return this.bootTableCalculateColumn(params); };
+  $.fn.bootTableCalculateColumn = function(params) {
+    if (typeof params === 'undefined') {
+      console.log('method \'bootTableCalculateColumn\', params undefined!'); return false;
+    }
+    var r = false;
+    this.each(function() {
+      r = $.Table.boot(this, null, null, { 'method' : 'calculateColumn', 'params' : params });
+    });
     return r;
   };
 
-  $.fn.calculateColumnByField = function(columnByField) {
-    var r = null;
-
+  // OK
+  $.fn.bTCalculateColumnByField        = function(params) { return this.bootTableCalculateColumnByField(params); };
+  $.fn.bootTableCalculateColumnByField = function(params) {
+    if (typeof params === 'undefined') {
+      console.log('method \'bootTableCalculateColumnByField\', params undefined!'); return false;
+    }
+    var r = false;
     this.each(function() {
-      r = $.Table.boot(this, null, null, { method : 'calculateColumnByField', columnByField : columnByField });
+      r = $.Table.boot(this, null, null, { 'method' : 'calculateColumnByField', 'params' : params });
     });
-
     return r;
   };
 
+  // OK
+  $.fn.bTGetSelectedItem        = function() { return this.bootTableGetSelectedItem(); };
+  $.fn.bootTableGetSelectedItem = function() {
+    var r = false;
+    this.each(function() {
+      r = $.Table.boot(this, null, null, { 'method' : 'getSelectedItem' });
+    });
+    return r;
+  };
   $.fn.getSelectedItem = function() {
-    var r = null;
+    console.log('Please. Use method bootTableGetSelectedItem! This method \'getSelectedItem\' to be deprecated.');
 
+    var r = false;
     this.each(function() {
-      r = $.Table.boot(this, null, null, { getSelectedItem : true });
+      r = $.Table.boot(this, null, null, { 'method' : 'getSelectedItem' });
     });
-
     return r;
   };
 
+  // OK
+  $.fn.bTGetItens        = function() { return this.bootTableGetItens(); };
+  $.fn.bootTableGetItens = function() {
+    var r = false;
+    this.each(function() {
+      r = $.Table.boot(this, null, null, { 'method' : 'getItens' });
+    });
+    return r;
+  };
   $.fn.getItens = function() {
-    var r = null;
+    console.log('Please. Use method bootTableGetItens! This method \'getItens\' to be deprecated.');
 
+    var r = false;
     this.each(function() {
-      r = $.Table.boot(this, null, null, { getItens : true });
+      r = $.Table.boot(this, null, null, { 'method' : 'getItens' });
     });
-
     return r;
   };
 
-  $.fn.getItensCount = function(zerosLeft) {
-    var r = null;
-
+  // OK
+  $.fn.bTGetItensByColumn        = function(params) { return this.bootTableGetItensByColumn(params); };
+  $.fn.bootTableGetItensByColumn = function(params) {
+    if (typeof params === 'undefined') {
+      console.log('method \'bootTableGetItensByColumn\', params undefined!'); return false;
+    }
+    var r = false;
     this.each(function() {
-      r = $.Table.boot(this, null, null, { method : 'getItensCount', zerosLeft : zerosLeft });
+      r = $.Table.boot(this, null, null, { 'method' : 'getItensByColumn', params : params });
     });
-
     return r;
+  };
+
+  // OK
+  $.fn.bTGetItensByField        = function(params) { return this.bootTableGetItensByField(params); };
+  $.fn.bootTableGetItensByField = function(params) {
+    if (typeof params === 'undefined') {
+      console.log('method \'bootTableGetItensByField\', params undefined!'); return false;
+    }
+    var r = false;
+    this.each(function() {
+      r = $.Table.boot(this, null, null, { 'method' : 'getItensByField', params : params });
+    });
+    return r;
+  };
+
+  // OK
+  $.fn.bTGetItensCount        = function(params) { return this.bootTableGetItensCount(params); };
+  $.fn.bootTableGetItensCount = function(params) {
+    if (typeof params === 'undefined') {
+      params = 0;
+    }
+    var r = false;
+    this.each(function() {
+      r = $.Table.boot(this, null, null, { 'method' : 'getItensCount', 'params' : params });
+    });
+    return r;
+  };
+
+  // OK
+  $.fn.bTHideColumn        = function(params) { return this.bootTableHideColumn(params); };
+  $.fn.bootTableHideColumn = function(params) {
+    if (typeof params === 'undefined') {
+      console.log('method \'bootTableHideColumn\', params undefined!'); return false;
+    }
+    return this.each(function() {
+      $.Table.boot(this, null, null, { 'method' : 'hideColumn', 'params' : params });
+    });
+  };
+
+  // OK
+  $.fn.bTHideColumnByField        = function(params) { return this.bootTableHideColumnByField(params); };
+  $.fn.bootTableHideColumnByField = function(params) {
+    if (typeof params === 'undefined') {
+      console.log('method \'bootTableHideColumnByField\', params undefined!'); return false;
+    }
+    return this.each(function() {
+      $.Table.boot(this, null, null, { 'method' : 'hideColumnByField', 'params' : params });
+    });
+  };
+
+  // OK
+  $.fn.bTShowColumn        = function(params) { return this.bootTableShowColumn(params); };
+  $.fn.bootTableShowColumn = function(params) {
+    if (typeof params === 'undefined') {
+      console.log('method \'bootTableShowColumn\', params undefined!'); return false;
+    }
+    return this.each(function() {
+      $.Table.boot(this, null, null, { 'method' : 'showColumn', 'params' : params });
+    });
+  };
+
+  // OK
+  $.fn.bTShowColumnByField        = function(params) { return this.bootTableShowColumnByField(params); };
+  $.fn.bootTableShowColumnByField = function(params) {
+    if (typeof params === 'undefined') {
+      console.log('method \'bootTableShowColumnByField\', params undefined!'); return false;
+    }
+    return this.each(function() {
+      $.Table.boot(this, null, null, { 'method' : 'showColumnByField', 'params' : params });
+    });
+  };
+
+  // OK
+  $.fn.bTFixHead        = function() { return this.bootTableFixHead(); };
+  $.fn.bootTableFixHead = function() {
+    return this.each(function() {
+      $.Table.boot(this, null, null, { method : 'fixhead' });
+    });
+  };
+
+  // OK
+  $.fn.bTFixHeadFoot        = function() { return this.bootTableFixHeadFoot(); };
+  $.fn.bootTableFixHeadFoot = function() {
+    return this.each(function() {
+      $.Table.boot(this, null, null, { method : 'fixheadfoot' });
+    });
   };
 
 })(jQuery);
