@@ -1,5 +1,5 @@
 /*!
- * boottable v3.0.5 (https://github.com/emalherbi/bootTable/)
+ * boottable v3.0.6 (https://github.com/emalherbi/bootTable/)
  * Copyright 2010-2015 emalherbi
  * Licensed under MIT (http://en.wikipedia.org/wiki/MIT_License)
  */
@@ -158,4 +158,16 @@ table tbody .selected {
   padding-top: 3px;
   padding-left: 30px;
   position: relative;
+}
+
+/* boottable details */
+
+.boottable-details-parent {
+  display: none;
+}
+.boottable-details {
+}
+.boottable-details thead tr th {
+}
+.boottable-details tbody tr td {
 }

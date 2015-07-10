@@ -154,3 +154,15 @@ table tbody .selected {
   padding-left: 30px;
   position: relative;
 }
+
+/* boottable details */
+
+.boottable-details-parent {
+  display: none;
+}
+.boottable-details {
+}
+.boottable-details thead tr th {
+}
+.boottable-details tbody tr td {
+}

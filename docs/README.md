@@ -1,3 +1,85 @@
+## boottable documentação
+
+Exemplo de JS. (melhorar).
+
+```javascript
+var PedidoDeCompra = {
+  name:'PedidoDeCompra',
+  init:function(){
+
+    var teste = '[{"ID_PRODUTOS":"1", "NOMEPRODUTO":"GASOSA COMUM PREMIUM", "QTDE":"100", "VLRUNITARIO":"56,52", "ULTVLRENTRADA":"2,50", "CUSTOMEDIO":"2,50", "QTDETOTAL":"5.50456"},{"ID_PRODUTOS":"2", "NOMEPRODUTO":"GASOSA COMUM PREMIUM", "QTDE":"100", "VLRUNITARIO":"56,52", "ULTVLRENTRADA":"2,50", "CUSTOMEDIO":"2,50", "QTDETOTAL":"5.50456"},{"ID_PRODUTOS":"3", "NOMEPRODUTO":"GASOSA COMUM PREMIUM", "QTDE":"100", "VLRUNITARIO":"56,52", "ULTVLRENTRADA":"2,50", "CUSTOMEDIO":"2,50", "QTDETOTAL":"5.50456"},{"ID_PRODUTOS":"4", "NOMEPRODUTO":"GASOSA COMUM PREMIUM", "QTDE":"100", "VLRUNITARIO":"56,52", "ULTVLRENTRADA":"2,50", "CUSTOMEDIO":"2,50", "QTDETOTAL":"5.50456"},{"ID_PRODUTOS":"1", "NOMEPRODUTO":"GASOSA COMUM PREMIUM", "QTDE":"100", "VLRUNITARIO":"56,52", "ULTVLRENTRADA":"2,50", "CUSTOMEDIO":"2,50", "QTDETOTAL":"5.50456"},{"ID_PRODUTOS":"1", "NOMEPRODUTO":"GASOSA COMUM PREMIUM", "QTDE":"100", "VLRUNITARIO":"56,52", "ULTVLRENTRADA":"2,50", "CUSTOMEDIO":"2,50", "QTDETOTAL":"5.50456"},{"ID_PRODUTOS":"1", "NOMEPRODUTO":"GASOSA COMUM PREMIUM", "QTDE":"100", "VLRUNITARIO":"56,52", "ULTVLRENTRADA":"2,50", "CUSTOMEDIO":"2,50", "QTDETOTAL":"5.50456"},{"ID_PRODUTOS":"1", "NOMEPRODUTO":"GASOSA COMUM PREMIUM", "QTDE":"100", "VLRUNITARIO":"56,52", "ULTVLRENTRADA":"2,50", "CUSTOMEDIO":"2,50", "QTDETOTAL":"5.50456"},{"ID_PRODUTOS":"1", "NOMEPRODUTO":"GASOSA COMUM PREMIUM", "QTDE":"100", "VLRUNITARIO":"56,52", "ULTVLRENTRADA":"2,50", "CUSTOMEDIO":"2,50", "QTDETOTAL":"5.50456"},{"ID_PRODUTOS":"1", "NOMEPRODUTO":"GASOSA COMUM PREMIUM", "QTDE":"100", "VLRUNITARIO":"56,52", "ULTVLRENTRADA":"2,50", "CUSTOMEDIO":"2,50", "QTDETOTAL":"5.50456"},{"ID_PRODUTOS":"1", "NOMEPRODUTO":"GASOSA COMUM PREMIUM", "QTDE":"100", "VLRUNITARIO":"56,52", "ULTVLRENTRADA":"2,50", "CUSTOMEDIO":"2,50", "QTDETOTAL":"5.50456"},{"ID_PRODUTOS":"1", "NOMEPRODUTO":"GASOSA COMUM PREMIUM", "QTDE":"100", "VLRUNITARIO":"56,52", "ULTVLRENTRADA":"2,50", "CUSTOMEDIO":"2,50", "QTDETOTAL":"5.50456"},{"ID_PRODUTOS":"1", "NOMEPRODUTO":"GASOSA COMUM PREMIUM", "QTDE":"100", "VLRUNITARIO":"56,52", "ULTVLRENTRADA":"2,50", "CUSTOMEDIO":"2,50", "QTDETOTAL":"5.50456"}]';
+
+    var list = jQuery.parseJSON( teste );
+
+    PedidoDeCompra.additens(list);
+  },
+  additens:function(list){
+    var arrHeader = [];
+    var arrValues = [];
+    var arrDetails = [];
+
+    $("#table-pedidodecompra").bootTable({ method : 'init', selected : true });
+    $("#table-pedidodecompra").bootTable({ method : 'clr' });
+
+    $.each(list, function(key, values) {
+      var header = {
+        "ID_PRODUTOS" : values.ID_PRODUTOS
+      };
+      arrHeader.push( header );
+
+      var item = {
+        "ID_PRODUTOS"   : values.ID_PRODUTOS,
+        "NOMEPRODUTO"   : values.NOMEPRODUTO,
+        "QTDE"          : values.QTDE,
+        "VLRUNITARIO"   : values.VLRUNITARIO,
+        "ULTVLRENTRADA" : values.ULTVLRENTRADA,
+        "CUSTOMEDIO"    : values.CUSTOMEDIO,
+        "QTDETOTAL"     : values.QTDETOTAL,
+        "EDIT"          : '<div onclick="PedidoDeCompra.edit('+key+')" class="btn btn-warning" ><span class="glyphicon glyphicon-pencil"></span></div>'
+      };
+      arrValues.push( item );
+
+      var details  = {
+        COLUMNS : ['Código', 'Nome do Produto', 'Valor'],
+        ITENS : [{
+          HEADER : {
+            "ID_PRODUTOS"  : "1",
+          },
+          VALUES : {
+            "ID_PRODUTOS"  : "1",
+            "NOMEPRODUTOS" : "TEU CUZINHO É PRETO",
+            "VALOR"        : "10,00"
+          }
+        },{
+          HEADER : {
+            "ID_PRODUTOS"  : "2",
+          },
+          VALUES : {
+            "ID_PRODUTOS"  : "2",
+            "NOMEPRODUTOS" : "TU É BIBA SEU VIADO",
+            "VALOR"        : "10,00"
+          }
+        },{
+          HEADER : {
+            "ID_PRODUTOS"  : "3",
+          },
+          VALUES : {
+            "ID_PRODUTOS"  : "3",
+            "NOMEPRODUTOS" : "MAMA NO TABACO",
+            "VALOR"        : "10,00"
+          }
+        }]
+      };
+      arrDetails.push( details );
+    });
+    $("#table-pedidodecompra").bTAddAll(arrHeader, arrValues, arrDetails);
+  },
+  edit : function(key) {
+    $("#table-pedidodecompra").bTToggleDetails( key );
+  }
+}
+```
+
 ## bTInit ou bootTableInit
 
 Método responsável por inicializar a Tabela.
@@ -75,7 +157,7 @@ console.log(result);
 // 3080311.0999999996
 ```
 
-# bTGetSelectedItem ou bootTableGetSelectedItem
+## bTGetSelectedItem ou bootTableGetSelectedItem
 
 Método responsável por buscar o item selecionado na grid, retornando um objeto com o item selecionado.
 
@@ -86,7 +168,7 @@ console.log(result);
 // {"ID_USER":2,"NAME":"Gillespie Short","MONEY":22.52,"ACTIVE":false}
 ```
 
-# bTGetItens ou bootTableGetItens
+## bTGetItens ou bootTableGetItens
 
 Método responsável por buscar os itens da tabela retornando um array de objetos.
 
@@ -97,7 +179,7 @@ console.log(result);
 // [{"ID_USER":1,"NAME":"Stefanie Melendez","MONEY":10.89,"ACTIVE":false},{"ID_USER":2,"NAME":"Gillespie Short","MONEY":22.52,"ACTIVE":false},{"ID_USER":3,"NAME":"Henrietta Langley","MONEY":28.11,"ACTIVE":true},{"ID_USER":4,"NAME":"Marisa Fitzpatrick","MONEY":27.44,"ACTIVE":true},{"ID_USER":5,"NAME":"Benson Holloway","MONEY":24.96,"ACTIVE":true},{"ID_USER":6,"NAME":"Hunter Fox","MONEY":37.12,"ACTIVE":true}]
 ```
 
-# bTGetItensByColumn ou bootTableGetItensByColumn
+## bTGetItensByColumn ou bootTableGetItensByColumn
 
 Método responsável por buscar os itens da tabela de acordo com a coluna passada e retornar um array de objetos.
 - Exemplo: Na tabela existe um campo do tipo checkbox, é buscado todos os itens selecionados.
@@ -119,7 +201,7 @@ console.log(result);
 // [{"ID_USER":1,"NAME":"Stefanie Melendez","MONEY":10.89,"ACTIVE":true}]
 ```
 
-# bTGetItensByField ou bootTableGetItensByField
+## bTGetItensByField ou bootTableGetItensByField
 
 Método responsável por buscar os itens da tabela de acordo com o "Field" passado e retornar um array de objetos.
 
@@ -141,7 +223,7 @@ console.log(result);
 // [{"ID_USER":1,"NAME":"Stefanie Melendez","MONEY":10.89,"ACTIVE":true}]
 ```
 
-# bTGetItensCount ou bootTableGetItensCount
+## bTGetItensCount ou bootTableGetItensCount
 
 Método responsável por contar a quantidade de itens na tabela.
 - Pode-se passar como parâmetro quantos zeros a esquerda devem ser adicionados de máscara.
@@ -156,7 +238,7 @@ console.log(result);
 // 0006
 ```
 
-# bTHideColumn ou bootTableHideColumn
+## bTHideColumn ou bootTableHideColumn
 
 Método responsável por esconder uma coluna, passando como parâmetro a coluna.
 
@@ -176,7 +258,7 @@ $('#table').bTAddAllJson(data).bTHideColumn([
 ]);
 ```
 
-# bTHideColumnByField ou bootTableHideColumnByField
+## bTHideColumnByField ou bootTableHideColumnByField
 
 Método responsável por esconder uma coluna, passando como parâmetro o "FIELD" da coluna.
 
@@ -196,7 +278,7 @@ $('#table').bTAddAllJson(data).bTHideColumnByField([
 ]);
 ```
 
-# bTShowColumn ou bootTableShowColumn
+## bTShowColumn ou bootTableShowColumn
 
 Método responsável por apresentar uma coluna, passando como parâmetro a coluna.
 
@@ -216,7 +298,7 @@ $('#table').bTAddAllJson(data).bTShowColumn([
 ]);
 ```
 
-# bTShowColumnByField ou bootTableShowColumnByField
+## bTShowColumnByField ou bootTableShowColumnByField
 
 Método responsável por apresentar uma coluna, passando como parâmetro o "FIELD" da coluna.
 
@@ -236,7 +318,7 @@ $('#table').bTAddAllJson(data).bTShowColumnByField([
 ]);
 ```
 
-# bTFixHead ou bootTableFixHead
+## bTFixHead ou bootTableFixHead
 
 Método responsável por fixar "thead" da tabela.
 
@@ -244,10 +326,34 @@ Método responsável por fixar "thead" da tabela.
 $('#table').bTFixHead();
 ```
 
-# bTFixHeadFoot ou bootTableFixHeadFoot
+## bTFixHeadFoot ou bootTableFixHeadFoot
 
 Método responsável por fixar "thead" e "tfoot" da tabela.
 
 ```javascript
 $('#table').bTFixHeadFoot();
+```
+
+## bTShowDetails ou bootTableShowDetails
+
+Método responsável por apresentar os detalhes da tabela.
+
+```javascript
+$('#table').bTShowDetails('key');
+```
+
+## bTHideDetails ou bootTableHideDetails
+
+Método responsável por esconder os detalhes da tabela.
+
+```javascript
+$('#table').bTHideDetails('key');
+```
+
+## bTToggleDetails ou bootTableToggleDetails
+
+Método responsável por apresentar/esconder os detalhes da tabela.
+
+```javascript
+$('#table').bTToggleDetails('key');
 ```
