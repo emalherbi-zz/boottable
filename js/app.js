@@ -106,11 +106,11 @@ var Table = {
     /* TABLE FILTER */
     $('#table-filter').bootTable({ method : 'init' });
     $('#table-filter').bootTable({ filter : true });
-    $('#table-filter').bootTableJson(dataJson);
+    $('#table-filter').bTAddAllJson(dataJson);
 
     /* TABLE ADD ALL JSON */
     $('#table-add-all-json').bootTable({ method : 'init' });
-    $('#table-add-all-json').bootTableJson(dataJson);
+    $('#table-add-all-json').bTAddAllJson(dataJson);
 
     /* TABLE USERS ADD ALL */
     var arrHeader = [];
@@ -133,7 +133,7 @@ var Table = {
 
     /* TABLE GET ALL ITENS */
     $('#table-get-all-itens').bootTable({ method : 'init' });
-    $('#table-get-all-itens').bootTableJson(dataJson);
+    $('#table-get-all-itens').bTAddAllJson(dataJson);
 
     $('#btn-get-all-itens').click(function() {
       $('#modal #modal-code').html(JSON.stringify($('#table-get-all-itens').getItens()));
@@ -142,7 +142,7 @@ var Table = {
 
     /* TABLE GET SELECTED ITEM */
     $('#table-get-selected-item').bootTable({ method : 'init', selected : true });
-    $('#table-get-selected-item').bootTableJson(dataJson);
+    $('#table-get-selected-item').bTAddAllJson(dataJson);
 
     $('#btn-get-selected-item').click(function() {
       var selected = $('#table-get-selected-item').find('tr').hasClass('selected');
@@ -158,17 +158,17 @@ var Table = {
 
     /* TABLE FIX HEAD */
     $('#table-fix-head').bootTable({ method : 'init' });
-    $('#table-fix-head').bootTableJson(dataJson);
+    $('#table-fix-head').bTAddAllJson(dataJson);
     $('#table-fix-head').bootTable({ method : 'fixHead' });
 
     /* TABLE FIX HEAD AND FOOT */
     $('#table-fix-head-foot').bootTable({ method : 'init' });
-    $('#table-fix-head-foot').bootTableJson(dataJson);
+    $('#table-fix-head-foot').bTAddAllJson(dataJson);
     $('#table-fix-head-foot').bootTable({ method : 'fixHeadFoot' });
 
     /* TABLE CALCULATE COLUMN */
     $('#table-calculate-column').bootTable({ method : 'init' });
-    $('#table-calculate-column').bootTableJson(dataJson);
+    $('#table-calculate-column').bTAddAllJson(dataJson);
     $('#btn-calculate-column').click(function() {
       $('#modal #modal-code').html( $('#table-calculate-column').calculateColumn(3) );
       $('#modal').modal('show');
@@ -176,7 +176,7 @@ var Table = {
 
     /* TABLE CALCULATE COLUMN BY FIELD */
     $('#table-calculate-column-by-field').bootTable({ method : 'init' });
-    $('#table-calculate-column-by-field').bootTableJson(dataJson);
+    $('#table-calculate-column-by-field').bTAddAllJson(dataJson);
     $('#btn-calculate-column-by-field').click(function() {
       $('#modal #modal-code').html( $('#table-calculate-column-by-field').calculateColumn('MONEY') );
       $('#modal').modal('show');
@@ -184,7 +184,7 @@ var Table = {
 
     /* TABLE GET ITENS COUNT */
     $('#table-get-itens-count').bootTable({ method : 'init' });
-    $('#table-get-itens-count').bootTableJson(dataJson);
+    $('#table-get-itens-count').bTAddAllJson(dataJson);
     $('#btn-get-itens-count').click(function() {
       $('#modal #modal-code').html( $('#table-get-itens-count').getItensCount('5') );
       $('#modal').modal('show');
