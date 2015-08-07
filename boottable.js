@@ -1,3 +1,8 @@
+/*!
+ * boottable v3.0.6 (https://github.com/emalherbi/bootTable/)
+ * Copyright 2010-2015 emalherbi
+ * Licensed under MIT (http://en.wikipedia.org/wiki/MIT_License)
+ */
 /* IE8 trim function not exist */
 if(typeof String.prototype.trim !== 'function') {
   String.prototype.trim = function() {
@@ -336,6 +341,30 @@ if (!Object.keys) {
       return rows;
     };
 
+    base.getItensByTr = function() {
+      var rows   = [];
+      var params = base.options.params;
+      params     = [].concat(params);
+
+      $.each(params, function(kk, obj) {
+        var k = Object.keys(obj);
+        var v = obj[k];
+
+        rows = base.$el.find('tbody tr').map(function(i) {
+          var vf = $(this).attr( k.toString().toLowerCase() )
+
+          if (vf == v) {
+            return base.getRows(i);
+          }
+        }).get();
+      });
+
+      if (rows.length === 0) {
+        return false;
+      }
+      return rows;
+    };
+
     base.calculateColumn = function() {
       var vlr = 0;
       base.$el.find("tbody tr > td:nth-child("+base.options.params+")").each(function(i, el) {
@@ -521,6 +550,54 @@ if (!Object.keys) {
 
           r = true;
         }
+      });
+
+      return r;
+    };
+
+    base.deleteItensByTr = function() {
+      var r = false;
+
+      var params = base.options.params;
+      params     = [].concat(params);
+
+      $.each(params, function(kk, obj) {
+        var key   = Object.keys(obj);
+        var value = obj[key];
+
+        base.$el.find('tbody tr').each(function(i, el) {
+          var id = $(el).attr( key.toString().toLowerCase() );
+
+          if (id == value) {
+            $(el).remove();
+            r = true;
+          }
+        });
+      });
+
+      return r;
+    };
+
+    base.hideItensByTr = function() {
+      var r = false;
+
+      var params = base.options.params;
+      params     = [].concat(params);
+
+      $.each(params, function(kk, obj) {
+        var key   = Object.keys(obj);
+        var value = obj[key];
+
+        base.$el.find('tbody tr').each(function(i, el) {
+          var id = $(el).attr( key.toString().toLowerCase() );
+
+          if (id == value) {
+            $(el).attr('hide', 'true');
+            $(el).hide('slow');
+
+            r = true;
+          }
+        });
       });
 
       return r;
@@ -717,6 +794,12 @@ if (!Object.keys) {
     else if (base.options.method == 'del' || base.options.method == 'delete' || base.options.method == 'remove') {
       r = base.delete();
     }
+    else if (base.options.method == 'deleteItensByTr' || base.options.method == 'deleteitensbytr') {
+      r = base.deleteItensByTr();
+    }
+    else if (base.options.method == 'hideItensByTr' || base.options.method == 'hideitensbytr') {
+      r = base.hideItensByTr();
+    }
     else if (base.options.method == 'add') {
       console.log('Please. Use method bootTableAll or bootTableJson! This method \'add\' to be deprecated.');
       r = base.add();
@@ -756,6 +839,9 @@ if (!Object.keys) {
     }
     else if (base.options.method == 'getItensByField' || base.options.method == 'getitensbyfield') {
       r = base.getItensByField();
+    }
+    else if (base.options.method == 'getItensByTr' || base.options.method == 'getitensbytr') {
+      r = base.getItensByTr();
     }
     else if (base.options.method == 'getItens' || base.options.method == 'getitens') {
       r = base.getItens();
@@ -799,9 +885,9 @@ if (!Object.keys) {
     filter   : false /* add filter on table */
   };
 
-  $.fn.bootTable = function(options, header, values) {
+  $.fn.bootTable = function(options, header, values, details) {
     return this.each(function() {
-      $.Table.boot(this, header, values, options);
+      $.Table.boot(this, header, values, details, options);
     });
   };
 
@@ -811,7 +897,6 @@ if (!Object.keys) {
 
   // add functions here!
 
-  // edit
   // delete
 
   // OK
@@ -851,7 +936,6 @@ if (!Object.keys) {
   };
 
   // OK
-  // Melhorar para que o padrao de arrays seja igual o bTAddAll
   $.fn.bTAddAllJson        = function(values) { return this.bootTableAddAllJson(values); };
   $.fn.bootTableAddAllJson = function(values) {
     if (typeof values === 'undefined') {
@@ -948,6 +1032,47 @@ if (!Object.keys) {
     var r = false;
     this.each(function() {
       r = $.Table.boot(this, null, null, null, { 'method' : 'getItensByField', params : params });
+    });
+    return r;
+  };
+
+  // OK
+  // Antiga Função edit
+  $.fn.bTGetItensByTr        = function(params) { return this.bootTableGetItensByTr(params); };
+  $.fn.bootTableGetItensByTr = function(params) {
+    if (typeof params === 'undefined') {
+      console.log('method \'bootTableGetItensByTr\', params undefined!'); return false;
+    }
+    var r = false;
+    this.each(function() {
+      r = $.Table.boot(this, null, null, null, { 'method' : 'getItensByTr', params : params });
+    });
+    return r;
+  };
+
+  // OK
+  $.fn.bTDeleteItensByTr        = function(params) { return this.bootTableDeleteItensByTr(params); };
+  $.fn.bootTableDeleteItensByTr = function(params) {
+    if (typeof params === 'undefined') {
+      console.log('method \'bootTableDeleteItensByTr\', params undefined!'); return false;
+    }
+    var r = false;
+    this.each(function() {
+      r = $.Table.boot(this, null, null, null, { 'method' : 'deleteItensByTr', params : params });
+    });
+    return r;
+  };
+
+  // OK
+  // Antiga função delete
+  $.fn.bTHideItensByTr        = function(params) { return this.bootTableHideItensByTr(params); };
+  $.fn.bootTableHideItensByTr = function(params) {
+    if (typeof params === 'undefined') {
+      console.log('method \'bootTableHideItensByTr\', params undefined!'); return false;
+    }
+    var r = false;
+    this.each(function() {
+      r = $.Table.boot(this, null, null, null, { 'method' : 'hideItensByTr', params : params });
     });
     return r;
   };
