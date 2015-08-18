@@ -1,3 +1,5 @@
+let bT = null;
+
 /* IE8 trim function not exist */
 if(typeof String.prototype.trim !== 'function') {
   String.prototype.trim = function() {
@@ -52,9 +54,9 @@ if (!Object.keys) {
     * init table
     */
     base.init = function() {
-      base.clr(); /* clear table */
-      base.msg(); /* adds a default message when no records found in table */
-      base.$el.css('cursor', 'pointer'); /* set cursor pointer */
+      base.clr();
+      base.msg();
+      base.cursor();
       return true;
     };
 
@@ -62,17 +64,21 @@ if (!Object.keys) {
     * removes all table items
     */
     base.clr = function() {
-      $('#'+base.$el.attr('id')+' tbody tr').remove();
-      return true;
+      bT.clr(base.$el.attr('id'));
     };
 
     /*
     * adds a default message when no records found in table
     */
     base.msg = function() {
-      var colspan = $('#'+base.$el.attr('id')+' thead tr th').length;
-      base.$el.append('<tr class="boottable-init" ><td colspan="'+colspan+'" ></td></tr>');
-      return true;
+      bT.msg(base.$el.attr('id'));
+    };
+
+    /*
+    * set cursor pointer
+    */
+    base.cursor = function() {
+      bT.cursor(base.$el.attr('id'));
     };
 
     /*
@@ -179,9 +185,7 @@ if (!Object.keys) {
     };
 
     base.getColumns = function() {
-      return $('#'+base.$el.attr('id')+' thead tr th').map(function() {
-        return $(this).text();
-      });
+      bT.getColumns(base.$el.attr('id'));
     };
 
     base.getColumnsField = function() {

@@ -1,3 +1,6 @@
 {
+  "temp" : ".temp",
+  
+  "js" : "js",
   "dist" : "dist"
 }

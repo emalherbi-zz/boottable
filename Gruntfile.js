@@ -3,6 +3,8 @@ module.exports = function(grunt) {
 
 	// Load the plugin that clean files and directories.
 	grunt.loadNpmTasks('grunt-contrib-clean');
+  // Turn ES6 code into vanilla ES5 with no runtime required using 6to5
+  require("load-grunt-tasks")(grunt);
   // Load the plugin that concatenate files.
   grunt.loadNpmTasks('grunt-contrib-concat');
   // Load the plugin that validate files with JSHint.
@@ -43,20 +45,44 @@ module.exports = function(grunt) {
       },
       basic_and_extras: {
         files: {
-          "<%= properties.dist %>/<%= pkg.name %>.js"  : ['<%= pkg.name %>.js' ],
+          "<%= properties.temp %>/<%= pkg.name %>.es6.js"  :
+            [
+              // default
+              '<%= properties.js %>/_default.js',
+
+              // generic
+              '<%= properties.js %>/_cursor.js',
+              '<%= properties.js %>/_clr.js',
+              '<%= properties.js %>/_msg.js',
+
+              '<%= properties.js %>/_getColumns.js',
+
+            ],
           "<%= properties.dist %>/<%= pkg.name %>.css" : ['<%= pkg.name %>.css']
         },
       },
     },
 
+    /* Turn ES6 code into vanilla ES5 with no runtime required using 6to5 */
+    '6to5': {
+       options: {
+           sourceMap: false
+       },
+       dist: {
+           files: {
+               '<%= properties.temp %>/<%= pkg.name %>.es5.js' : '<%= properties.temp %>/<%= pkg.name %>.es6.js'
+           }
+       }
+    },
+
     /* js validate */
     jshint: {
-      all: ['<%= pkg.name %>.js']
+      all: ['<%= properties.dist %>/<%= pkg.name %>.js']
     },
 
     /* css validate */
     csslint: {
-      all: ['<%= pkg.name %>.css']
+      all: ['<%= properties.dist %>/<%= pkg.name %>.css']
     },
 
     /* js file minification */
@@ -85,6 +111,18 @@ module.exports = function(grunt) {
 
     /* put files not handled in other tasks here */
     copy: {
+      '6to5': {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= properties.temp %>',
+          src: '<%= pkg.name %>.es5.js',
+          dest: '<%= properties.dist %>/',
+          rename: function(dest, src) {
+            return dest + src.replace(".es5", "");
+          }
+        }]
+      },
       test: {
         files: [{
           expand: true,
@@ -127,11 +165,13 @@ module.exports = function(grunt) {
   grunt.registerTask('build', [
     'clean',
     'concat',
-    'jshint',
-    'csslint',
-    'uglify',
-    'cssmin',
-    'copy'
+    '6to5',
+    'copy:6to5',
+    'jshint'//,
+    //'csslint'//,
+    //'uglify',
+    //'cssmin',
+    //'copy:test'
   ]);
 
   grunt.registerTask('deploy', [
