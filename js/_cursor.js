@@ -1,8 +1,6 @@
 bT = ((parent, $) => {
 
-  /*
-  * set cursor pointer
-  */
+  /* set cursor pointer */
   parent.cursor = (id) => {
     $('#' + id).css('cursor', 'pointer');
   };

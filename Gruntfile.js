@@ -40,22 +40,27 @@ module.exports = function(grunt) {
     /* concat files */
     concat: {
       options: {
+        stripBanners: true,
         banner: '<%= banner %>',
-        stripBanners: false
       },
       basic_and_extras: {
         files: {
           "<%= properties.temp %>/<%= pkg.name %>.es6.js"  :
             [
-              // default
+              // Default
               '<%= properties.js %>/_default.js',
 
-              // generic
+              // Generic
               '<%= properties.js %>/_cursor.js',
               '<%= properties.js %>/_clr.js',
               '<%= properties.js %>/_msg.js',
 
               '<%= properties.js %>/_getColumns.js',
+              '<%= properties.js %>/_getColumnsByField.js',
+
+              // Functions
+              '<%= properties.js %>/_startLoader.js', /* using _clr */
+              '<%= properties.js %>/_getItensCount.js',
 
             ],
           "<%= properties.dist %>/<%= pkg.name %>.css" : ['<%= pkg.name %>.css']
@@ -77,12 +82,15 @@ module.exports = function(grunt) {
 
     /* js validate */
     jshint: {
-      all: ['<%= properties.dist %>/<%= pkg.name %>.js']
+      options: {
+        jshintrc: '.jshintrc',
+      },
+      all: ['<%= properties.dist %>/*.js']
     },
 
     /* css validate */
     csslint: {
-      all: ['<%= properties.dist %>/<%= pkg.name %>.css']
+      all: ['<%= properties.dist %>/*.css']
     },
 
     /* js file minification */

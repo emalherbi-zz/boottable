@@ -45,8 +45,12 @@ if (!Object.keys) {
 
     /* initialize plugin */
     base.initialize = function () {
-      if (typeof header === "undefined" || header === null) header = "";
-      if (typeof values === "undefined" || values === null) values = "";
+      if (typeof header === "undefined" || header === null) {
+        header = "";
+      }
+      if (typeof values === "undefined" || values === null) {
+        values = "";
+      }
 
       base.header = header;
       base.values = values;
@@ -91,34 +95,16 @@ if (!Object.keys) {
     * add div loader on page
     */
     base.startLoader = function () {
-      var html = "<div class=\"boottable-load-panel\" ><div class=\"boottable-load-label\" ></div></div>";
-      var top = $(window).scrollTop();
-
-      base.clr(); /* clear */
-
-      /* add progress */
-      var colspan = base.$el.find("thead").find("tr").find("th").length;
-      base.$el.find("tbody").append("<tr><td colspan=\"" + colspan + "\" >" + html + "</td></tr>");
-
-      $(window).scrollTop(top);
-      return true;
+      return bT.startLoader(base.$el);
     };
 
-    /*
-    * remove all div loaders
-    */
     base.endLoader = function () {
       // do nothing...
       return true;
     };
 
-    var addZerosLeft = function (str, max) {
-      str = String(str);
-      return str.length < max ? addZerosLeft("0" + str, max) : str;
-    };
-
     base.getItensCount = function () {
-      return addZerosLeft(base.$el.find("tbody tr").not(base.$el.find(".boottable-init")).length, base.options.params);
+      return bT.getItensCount(base.$el.find("tbody tr").not(base.$el.find(".boottable-init")).length, base.options.params);
     };
 
     /*
@@ -195,9 +181,7 @@ if (!Object.keys) {
     };
 
     base.getColumnsField = function () {
-      return $("#" + base.$el.attr("id") + " thead tr th").map(function () {
-        return $(this).attr("field");
-      });
+      bT.getColumnsByField(base.$el.attr("id"));
     };
 
     base.getRows = function (i) {
@@ -599,59 +583,59 @@ if (!Object.keys) {
     base.initialize();
 
     var r = null;
-    if (base.options.method == "init") {
+    if (base.options.method === "init") {
       r = base.init();
-    } else if (base.options.method == "clr" || base.options.method == "clear") {
+    } else if (base.options.method === "clr" || base.options.method === "clear") {
       console.log("Please. Use method bootTableInit! This method 'clear' to be deprecated.");
       r = base.clr();
-    } else if (base.options.method == "msg") {
+    } else if (base.options.method === "msg") {
       console.log("Please. Use method bootTableInit! This method 'msg' to be deprecated.");
       r = base.msg();
-    } else if (base.options.method == "loader" || base.options.method == "startloader" || base.options.method == "startLoader") {
+    } else if (base.options.method === "loader" || base.options.method === "startloader" || base.options.method === "startLoader") {
       r = base.startLoader();
-    } else if (base.options.method == "endloader" || base.options.method == "endLoader") {
+    } else if (base.options.method === "endloader" || base.options.method === "endLoader") {
       console.log("This method 'endloader' to be deprecated.");
       r = base.endLoader();
-    } else if (base.options.method == "fixhead" || base.options.method == "fixHead") {
+    } else if (base.options.method === "fixhead" || base.options.method === "fixHead") {
       r = base.fixHead();
-    } else if (base.options.method == "fixheadfoot" || base.options.method == "fixHeadFoot") {
+    } else if (base.options.method === "fixheadfoot" || base.options.method === "fixHeadFoot") {
       r = base.fixHeadFoot();
-    } else if (base.options.method == "edt" || base.options.method == "edit") {
+    } else if (base.options.method === "edt" || base.options.method === "edit") {
       console.log("Please. Use method bTGetItensByField or bTGetItensByColumn! This method 'edit' to be deprecated.");
       r = base.edit();
-    } else if (base.options.method == "del" || base.options.method == "delete" || base.options.method == "remove") {
+    } else if (base.options.method === "del" || base.options.method === "delete" || base.options.method === "remove") {
       r = base["delete"]();
-    } else if (base.options.method == "add") {
+    } else if (base.options.method === "add") {
       console.log("Please. Use method bootTableAll or bootTableJson! This method 'add' to be deprecated.");
       r = base.add();
-    } else if (base.options.method == "addall" || base.options.method == "addAll" || base.options.method == "all") {
+    } else if (base.options.method === "addall" || base.options.method === "addAll" || base.options.method === "all") {
       r = base.addAll();
-    } else if (base.options.method == "addAllJson" || base.options.method == "allJson" || base.options.method == "json") {
+    } else if (base.options.method === "addAllJson" || base.options.method === "allJson" || base.options.method === "json") {
       base.header = jQuery.parseJSON(base.header);
       base.values = jQuery.parseJSON(base.values);
 
       r = base.addAll();
-    } else if (base.options.method == "calculateColumn" || base.options.method == "calculatecolumn") {
+    } else if (base.options.method === "calculateColumn" || base.options.method === "calculatecolumn") {
       r = base.calculateColumn();
-    } else if (base.options.method == "calculateColumnByField" || base.options.method == "calculatecolumnbyfield") {
+    } else if (base.options.method === "calculateColumnByField" || base.options.method === "calculatecolumnbyfield") {
       r = base.calculateColumnByField();
-    } else if (base.options.method == "getItensCount" || base.options.method == "getitenscount") {
+    } else if (base.options.method === "getItensCount" || base.options.method === "getitenscount") {
       r = base.getItensCount();
-    } else if (base.options.method == "hideColumn" || base.options.method == "hidecolumn") {
+    } else if (base.options.method === "hideColumn" || base.options.method === "hidecolumn") {
       r = base.hideColumn();
-    } else if (base.options.method == "hideColumnByField" || base.options.method == "hidecolumnbyfield") {
+    } else if (base.options.method === "hideColumnByField" || base.options.method === "hidecolumnbyfield") {
       r = base.hideColumnByField();
-    } else if (base.options.method == "showColumn" || base.options.method == "showcolumn") {
+    } else if (base.options.method === "showColumn" || base.options.method === "showcolumn") {
       r = base.showColumn();
-    } else if (base.options.method == "showColumnByField" || base.options.method == "showcolumnbyfield") {
+    } else if (base.options.method === "showColumnByField" || base.options.method === "showcolumnbyfield") {
       r = base.showColumnByField();
-    } else if (base.options.method == "getItensByColumn" || base.options.method == "getitensbycolumn") {
+    } else if (base.options.method === "getItensByColumn" || base.options.method === "getitensbycolumn") {
       r = base.getItensByColumn();
-    } else if (base.options.method == "getItensByField" || base.options.method == "getitensbyfield") {
+    } else if (base.options.method === "getItensByField" || base.options.method === "getitensbyfield") {
       r = base.getItensByField();
-    } else if (base.options.method == "getItens" || base.options.method == "getitens") {
+    } else if (base.options.method === "getItens" || base.options.method === "getitens") {
       r = base.getItens();
-    } else if (base.options.method == "getSelectedItem" || base.options.method == "getselecteditem") {
+    } else if (base.options.method === "getSelectedItem" || base.options.method === "getselecteditem") {
       r = base.getSelectedItem();
     }
 
@@ -942,27 +926,21 @@ if (!Object.keys) {
 })(jQuery);
 
 bT = (function (parent, $) {
-  /*
-  * set cursor pointer
-  */
+  /* set cursor pointer */
   parent.cursor = function (id) {
     $("#" + id).css("cursor", "pointer");
   };
 })(bT || {}, jQuery);
 
 bT = (function (parent, $) {
-  /*
-  * removes all table items
-  */
+  /* removes all table items */
   parent.clr = function (id) {
     $("#" + id + " tbody tr").remove();
   };
 })(bT || {}, jQuery);
 
 bT = (function (parent, $) {
-  /*
-  * adds a default message when no records found in table
-  */
+  /* adds a default message when no records found in table */
   parent.msg = function (id) {
     var colspan = $("#" + id + " thead tr th").length;
     base.$el.append("<tr class=\"boottable-init\" ><td colspan=\"" + colspan + "\" ></td></tr>");
@@ -970,12 +948,48 @@ bT = (function (parent, $) {
 })(bT || {}, jQuery);
 
 bT = (function (parent, $) {
-  /*
-  * removes all table items
-  */
+  /* get columns by thead */
   parent.getColumns = function (id) {
     return $("#" + id + " thead tr th").map(function () {
       return $(this).text();
     });
+  };
+})(bT || {}, jQuery);
+
+bT = (function (parent, $) {
+  /* get columns thead by field */
+  parent.getColumnsByField = function (id) {
+    return $("#" + id + " thead tr th").map(function () {
+      return $(this).attr("field");
+    });
+  };
+})(bT || {}, jQuery);
+
+bT = (function (parent, $) {
+  /* add div loader on page */
+  parent.startLoader = function ($el) {
+    var html = "<div class=\"boottable-load-panel\" ><div class=\"boottable-load-label\" ></div></div>";
+    var top = $(window).scrollTop();
+
+    parent.clr($el.attr("id")); /* clear */
+
+    /* add progress */
+    var colspan = $el.find("thead").find("tr").find("th").length;
+    $el.find("tbody").append("<tr><td colspan=\"" + colspan + "\" >" + html + "</td></tr>");
+
+    $(window).scrollTop(top);
+    return true;
+  };
+})(bT || {}, jQuery);
+
+bT = (function (parent, $) {
+  /* get itens count from table, add zeros left */
+  var addZerosLeft = function (str, max) {
+    str = String(str);
+    return str.length < max ? addZerosLeft("0" + str, max) : str;
+  };
+
+  parent.getItensCount = function (str, max) {
+    return addZerosLeft(str, max);
   };
 })(bT || {}, jQuery);

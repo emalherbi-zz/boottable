@@ -3,8 +3,6 @@
  * Copyright 2010-2015 emalherbi
  * Licensed under MIT (http://en.wikipedia.org/wiki/MIT_License)
  */
-/* internationalization */
-
 table .boottable-init td::after {
   content: "No record found!";
 }

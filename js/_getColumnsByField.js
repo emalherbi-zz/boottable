@@ -1,9 +1,9 @@
 bT = ((parent, $) => {
 
-  /* get columns by thead */
-  parent.getColumns = (id) => {
+  /* get columns thead by field */
+  parent.getColumnsByField = (id) => {
     return $('#' + id + ' thead tr th').map(function() {
-      return $(this).text();
+      return $(this).attr('field');
     });
   };
 
