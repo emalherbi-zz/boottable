@@ -61,6 +61,7 @@ module.exports = function(grunt) {
               // Functions
               '<%= properties.js %>/_startLoader.js', /* using _clr */
               '<%= properties.js %>/_getItensCount.js',
+              '<%= properties.js %>/_getRows.js', /* using _getColumnsByField */
 
             ],
           "<%= properties.dist %>/<%= pkg.name %>.css" : ['<%= pkg.name %>.css']

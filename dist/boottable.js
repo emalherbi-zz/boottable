@@ -60,9 +60,6 @@ if (!Object.keys) {
       return true;
     };
 
-    /*
-    * init table
-    */
     base.init = function () {
       base.clr();
       base.msg();
@@ -70,30 +67,18 @@ if (!Object.keys) {
       return true;
     };
 
-    /*
-    * removes all table items
-    */
     base.clr = function () {
       bT.clr(base.$el.attr("id"));
     };
 
-    /*
-    * adds a default message when no records found in table
-    */
     base.msg = function () {
       bT.msg(base.$el.attr("id"));
     };
 
-    /*
-    * set cursor pointer
-    */
     base.cursor = function () {
       bT.cursor(base.$el.attr("id"));
     };
 
-    /*
-    * add div loader on page
-    */
     base.startLoader = function () {
       return bT.startLoader(base.$el);
     };
@@ -177,35 +162,15 @@ if (!Object.keys) {
     };
 
     base.getColumns = function () {
-      bT.getColumns(base.$el.attr("id"));
+      return bT.getColumns(base.$el.attr("id"));
     };
 
     base.getColumnsField = function () {
-      bT.getColumnsByField(base.$el.attr("id"));
+      return bT.getColumnsByField(base.$el.attr("id"));
     };
 
     base.getRows = function (i) {
-      var columns = base.getColumnsField();
-      var table = $("#" + base.$el.attr("id") + " tbody tr:nth-child(" + (i + 1) + ")").map(function (i) {
-        var row = {};
-        $(this).find("td").each(function (i) {
-          var v = $(this).find("input").val();
-          if (typeof v == "undefined") {
-            v = $(this).find("textarea").val();
-            if (typeof v == "undefined") {
-              v = $(this).find("label").text();
-              if (!v.trim()) {
-                v = $(this).text();
-              }
-            }
-          }
-          if (typeof columns[i] !== "undefined") {
-            row[columns[i]] = v;
-          }
-        });
-        return row;
-      }).get();
-      return table;
+      return bT.getRows(base.$el.attr("id"), i);
     };
 
     base.getSelectedItem = function () {
@@ -991,5 +956,33 @@ bT = (function (parent, $) {
 
   parent.getItensCount = function (str, max) {
     return addZerosLeft(str, max);
+  };
+})(bT || {}, jQuery);
+
+bT = (function (parent, $) {
+  /* get rows */
+  parent.getRows = function (id, i) {
+    var columns = parent.getColumnsByField(id);
+
+    var table = $("#" + id + " tbody tr:nth-child(" + (i + 1) + ")").map(function (i) {
+      var row = {};
+      $(this).find("td").each(function (i) {
+        var v = $(this).find("input").val();
+        if (typeof v === "undefined") {
+          v = $(this).find("textarea").val();
+          if (typeof v === "undefined") {
+            v = $(this).find("label").text();
+            if (!v.trim()) {
+              v = $(this).text();
+            }
+          }
+        }
+        if (typeof columns[i] !== "undefined") {
+          row[columns[i]] = v;
+        }
+      });
+      return row;
+    }).get();
+    return table;
   };
 })(bT || {}, jQuery);
