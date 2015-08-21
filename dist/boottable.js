@@ -18,13 +18,11 @@ if (typeof String.prototype.trim !== "function") {
 if (!Object.keys) {
   Object.keys = function (obj) {
     var keys = [];
-
     for (var i in obj) {
       if (obj.hasOwnProperty(i)) {
         keys.push(i);
       }
     }
-
     return keys;
   };
 }
@@ -54,7 +52,6 @@ if (!Object.keys) {
 
       base.header = header;
       base.values = values;
-
       base.options = $.extend({}, $.Table.boot.defaultOptions, options);
 
       return true;
@@ -92,29 +89,8 @@ if (!Object.keys) {
       return bT.getItensCount(base.$el.find("tbody tr").not(base.$el.find(".boottable-init")).length, base.options.params);
     };
 
-    /*
-    * This method to be deprecated.
-    *
-    * Please. If necessary insert a large amount of records in the table, use the method addall.
-    */
     base.add = function () {
-      var arr = [];
-      $.each(base.header, function (i, v) {
-        arr.push(i + "='" + v + "'");
-      });
-      var join = arr.join(" ");
-
-      var tr = "";
-      tr += "<tr " + join + " >";
-
-      $.each(base.values, function (i, v) {
-        tr += "<td>" + v + "</td>";
-      });
-      tr += "</tr>";
-
-      base.$el.append(tr);
-      base.$el.show("fast");
-      return true;
+      return bT.add(base.$el, base.header, base.values);
     };
 
     base.addAll = function () {
@@ -174,68 +150,21 @@ if (!Object.keys) {
     };
 
     base.getSelectedItem = function () {
-      var r = false;
-      var i = base.$el.find("tbody tr.selected").index();
-      r = base.getRows(i);
-      return r[0];
+      return bT.getSelectedItem(base.$el);
     };
 
     base.getItens = function () {
-      var rows = base.$el.find("tbody tr").map(function (i) {
-        return base.getRows(i);
-      }).get();
-      return rows;
+      return bT.getItens(base.$el);
     };
 
     // $('#table').bTGetItensByColumn({'0' : 'true'});
     base.getItensByColumn = function () {
-      var rows = [];
-      var params = base.options.params;
-      params = [].concat(params);
-
-      $.each(params, function (kk, obj) {
-        var k = Object.keys(obj);
-        var v = obj[k];
-
-        rows = base.$el.find("tbody tr").map(function (i) {
-          var row = base.getRows(i);
-          var keys = Object.keys(row[0]);
-          var field = keys[k - 1];
-
-          if (row[0][field] == v) {
-            return row;
-          }
-        }).get();
-      });
-
-      if (rows.length === 0) {
-        return false;
-      }
-      return rows;
+      return bT.getItensByColumn(base.$el, base.options.params);
     };
 
     // $('#table').bTGetItensByField({'SELECIONAR' : 'true'});
     base.getItensByField = function () {
-      var rows = [];
-      var params = base.options.params;
-      params = [].concat(params);
-
-      $.each(params, function (kk, obj) {
-        var k = Object.keys(obj);
-        var v = obj[k];
-
-        rows = base.$el.find("tbody tr").map(function (i) {
-          var row = base.getRows(i);
-          if (row[0][k] == v) {
-            return row;
-          }
-        }).get();
-      });
-
-      if (rows.length === 0) {
-        return false;
-      }
-      return rows;
+      return bT.getItensByField(base.$el, base.options.params);
     };
 
     base.calculateColumn = function () {
@@ -931,6 +860,34 @@ bT = (function (parent, $) {
 })(bT || {}, jQuery);
 
 bT = (function (parent, $) {
+  /* get rows */
+  parent.getRows = function (id, i) {
+    var columns = parent.getColumnsByField(id);
+
+    var table = $("#" + id + " tbody tr:nth-child(" + (i + 1) + ")").map(function (i) {
+      var row = {};
+      $(this).find("td").each(function (i) {
+        var v = $(this).find("input").val();
+        if (typeof v === "undefined") {
+          v = $(this).find("textarea").val();
+          if (typeof v === "undefined") {
+            v = $(this).find("label").text();
+            if (!v.trim()) {
+              v = $(this).text();
+            }
+          }
+        }
+        if (typeof columns[i] !== "undefined") {
+          row[columns[i]] = v;
+        }
+      });
+      return row;
+    }).get();
+    return table;
+  };
+})(bT || {}, jQuery);
+
+bT = (function (parent, $) {
   /* add div loader on page */
   parent.startLoader = function ($el) {
     var html = "<div class=\"boottable-load-panel\" ><div class=\"boottable-load-label\" ></div></div>";
@@ -960,29 +917,73 @@ bT = (function (parent, $) {
 })(bT || {}, jQuery);
 
 bT = (function (parent, $) {
-  /* get rows */
-  parent.getRows = function (id, i) {
-    var columns = parent.getColumnsByField(id);
+  /* get selected item */
+  parent.getSelectedItem = function ($el) {
+    var i = $el.find("tbody tr.selected").index();
 
-    var table = $("#" + id + " tbody tr:nth-child(" + (i + 1) + ")").map(function (i) {
-      var row = {};
-      $(this).find("td").each(function (i) {
-        var v = $(this).find("input").val();
-        if (typeof v === "undefined") {
-          v = $(this).find("textarea").val();
-          if (typeof v === "undefined") {
-            v = $(this).find("label").text();
-            if (!v.trim()) {
-              v = $(this).text();
-            }
-          }
-        }
-        if (typeof columns[i] !== "undefined") {
-          row[columns[i]] = v;
-        }
-      });
-      return row;
+    var r = false;
+    r = parent.getRows(i);
+    return r[0];
+  };
+})(bT || {}, jQuery);
+
+bT = (function (parent, $) {
+  /* get Itens */
+  parent.getItens = function ($el) {
+    return $el.find("tbody tr").map(function (i) {
+      return parent.getRows(i);
     }).get();
-    return table;
+  };
+})(bT || {}, jQuery);
+
+bT = (function (parent, $) {
+  /* get itens by column */
+  parent.getItensByColumn = function ($el, params) {
+    var rows = [];
+    params = [].concat(params);
+
+    $.each(params, function (kk, obj) {
+      var k = Object.keys(obj);
+      var v = obj[k];
+
+      rows = $el.find("tbody tr").map(function (i) {
+        var row = parent.getRows(i);
+        var keys = Object.keys(row[0]);
+        var field = keys[k - 1];
+
+        if (row[0][field] === v) {
+          return row;
+        }
+      }).get();
+    });
+
+    if (rows.length === 0) {
+      return false;
+    }
+    return rows;
+  };
+})(bT || {}, jQuery);
+
+bT = (function (parent, $) {
+  /* add item */
+  parent.add = function ($el, header, values) {
+    var arr = [];
+    $.each(header, function (i, v) {
+      arr.push(i + "='" + v + "'");
+    });
+    var join = arr.join(" ");
+
+    var tr = "";
+    tr += "<tr " + join + " >";
+
+    $.each(values, function (i, v) {
+      tr += "<td>" + v + "</td>";
+    });
+    tr += "</tr>";
+
+    $el.append(tr);
+    $el.show("fast");
+
+    return true;
   };
 })(bT || {}, jQuery);
